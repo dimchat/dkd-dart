@@ -3,6 +3,10 @@
 /// More dartdocs go here.
 library dkd;
 
-export 'src/dkd_base.dart';
+export 'src/protocol/content.dart';
+export 'src/protocol/envelope.dart';
+export 'src/protocol/instant.dart';
+export 'src/protocol/secure.dart';
+export 'src/protocol/reliable.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+export 'src/factory.dart';
