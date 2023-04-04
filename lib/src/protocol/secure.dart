@@ -115,7 +115,7 @@ abstract class SecureMessage implements Message {
   ///
   /// @param member - group member ID/string
   /// @return SecureMessage
-  SecureMessage? trim(ID member);
+  SecureMessage trim(ID member);
 
   //
   //  Factory method

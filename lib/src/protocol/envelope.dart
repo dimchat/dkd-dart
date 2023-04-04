@@ -45,7 +45,7 @@ import '../factory.dart';
 abstract class Envelope implements Mapper {
 
   /// message from
-  ID? get sender;
+  ID get sender;
 
   /// message to
   ID get receiver;
@@ -74,7 +74,7 @@ abstract class Envelope implements Mapper {
   //  Factory methods
   //
 
-  static Envelope? create({required ID sender, required ID receiver, DateTime? time}) {
+  static Envelope create({required ID sender, required ID receiver, DateTime? time}) {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.createEnvelope(sender: sender, receiver: receiver, time: time);
   }

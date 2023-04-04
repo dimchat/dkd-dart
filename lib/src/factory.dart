@@ -103,10 +103,10 @@ class MessageGeneralFactory {
     return _envelopeFactory;
   }
 
-  Envelope? createEnvelope({required ID sender, required ID receiver, DateTime? time}) {
+  Envelope createEnvelope({required ID sender, required ID receiver, DateTime? time}) {
     EnvelopeFactory? factory = getEnvelopeFactory();
     assert(factory != null, 'envelope factory not ready');
-    return factory?.createEnvelope(sender: sender, receiver: receiver, time: time);
+    return factory!.createEnvelope(sender: sender, receiver: receiver, time: time);
   }
 
   Envelope? parseEnvelope(Object? env) {
@@ -136,10 +136,10 @@ class MessageGeneralFactory {
     return _instantMessageFactory;
   }
 
-  InstantMessage? createInstantMessage(Envelope head, Content body) {
+  InstantMessage createInstantMessage(Envelope head, Content body) {
     InstantMessageFactory? factory = getInstantMessageFactory();
     assert(factory != null, 'instant message factory not ready');
-    return factory?.createInstantMessage(head, body);
+    return factory!.createInstantMessage(head, body);
   }
 
   InstantMessage? parseInstantMessage(Object? msg) {

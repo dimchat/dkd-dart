@@ -91,7 +91,7 @@ abstract class ReliableMessage implements SecureMessage {
 
   ///  Verify 'data' and 'signature' field with sender's public key
   ///
-  /// @return SecureMessage object
+  /// @return SecureMessage object, null on signature error
   SecureMessage? verify();
 
   //

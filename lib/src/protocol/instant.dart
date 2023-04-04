@@ -70,15 +70,15 @@ abstract class InstantMessage implements Message {
   /// 2. Encrypt group message, replace 'content' field with encrypted 'data'
   ///
   /// @param password - symmetric key
-  /// @param members - group members
-  /// @return SecureMessage object
+  /// @param members - group members for group message
+  /// @return SecureMessage object, null on visa not found
   SecureMessage? encrypt(SymmetricKey password, {List<ID>? members});
 
   //
   //  Factory methods
   //
 
-  static InstantMessage? create(Envelope head, Content body) {
+  static InstantMessage create(Envelope head, Content body) {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.createInstantMessage(head, body);
   }
@@ -149,15 +149,15 @@ abstract class InstantMessageDelegate implements MessageDelegate {
   ///  5. Encrypt key data to 'message.key' with receiver's public key
   ///
   /// @param iMsg - instant message object
-  /// @param data - serialized data of symmetric key
+  /// @param key - serialized data of symmetric key
   /// @param receiver - receiver ID string
-  /// @return encrypted symmetric key data
-  Uint8List encryptKey(Uint8List key, InstantMessage iMsg);
+  /// @return encrypted symmetric key data, null on visa not found
+  Uint8List? encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);
 
   ///  6. Encode 'message.key' to String (Base64)
   ///
   /// @param iMsg - instant message object
-  /// @param data - encrypted symmetric key data
+  /// @param key - encrypted symmetric key data
   /// @return String object
   Object encodeKey(Uint8List key, InstantMessage iMsg);
 }
