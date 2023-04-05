@@ -163,12 +163,12 @@ abstract class SecureMessageDelegate implements MessageDelegate {
 
   ///  3. Deserialize message key from data (JsON / ProtoBuf / ...)
   ///
-  /// @param key - serialized key data
+  /// @param key - serialized key data, null for reused key
   /// @param sender - sender/member ID string
   /// @param receiver - receiver/group ID string
   /// @param sMsg - secure message object
   /// @return symmetric key
-  SymmetricKey? deserializeKey(Uint8List key, ID sender, ID receiver, SecureMessage sMsg);
+  SymmetricKey? deserializeKey(Uint8List? key, ID sender, ID receiver, SecureMessage sMsg);
 
   //
   //  Decrypt Content

@@ -33,7 +33,6 @@ import 'dart:typed_data';
 import 'package:mkm/mkm.dart';
 
 import '../factory.dart';
-import 'envelope.dart';
 import 'secure.dart';
 
 ///  Reliable Message signed by an asymmetric key
@@ -63,8 +62,8 @@ abstract class ReliableMessage implements SecureMessage {
   ///  ~~~~~~~~~~~~~
   ///  Extends for the first message package of 'Handshake' protocol.
   ///
-  /// @param meta - Meta
-  set meta(Meta? meta);
+  /// @param info - Meta info
+  set meta(Meta? info);
   Meta? get meta;
 
   ///  Sender's Visa
@@ -116,7 +115,7 @@ abstract class ReliableMessage implements SecureMessage {
 
 ///  Reliable Message Delegate
 ///  ~~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class ReliableMessageDelegate implements MessageDelegate {
+abstract class ReliableMessageDelegate implements SecureMessageDelegate {
 
   ///  1. Decode 'message.signature' from String (Base64)
   ///

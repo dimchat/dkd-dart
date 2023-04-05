@@ -57,15 +57,15 @@ class MessageGeneralFactory {
   //  Content
   //
 
-  void setContentFactory(int type, ContentFactory? factory) {
+  void setContentFactory(int msgType, ContentFactory? factory) {
     if (factory == null) {
-      _contentFactories.remove(type);
+      _contentFactories.remove(msgType);
     } else {
-      _contentFactories[type] = factory;
+      _contentFactories[msgType] = factory;
     }
   }
-  ContentFactory? getContentFactory(int type) {
-    return _contentFactories[type];
+  ContentFactory? getContentFactory(int msgType) {
+    return _contentFactories[msgType];
   }
 
   int getContentType(Map content) {
@@ -83,8 +83,9 @@ class MessageGeneralFactory {
       assert(false, 'content error: $content');
       return null;
     }
-    int type = getContentType(info);
-    ContentFactory? factory = getContentFactory(type);
+    // get factory by message type
+    int msgType = getContentType(info);
+    ContentFactory? factory = getContentFactory(msgType);
     if (factory == null) {
       factory = getContentFactory(0);  // unknown
       assert(factory != null, 'cannot parse content: $content');

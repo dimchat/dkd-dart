@@ -139,7 +139,7 @@ class ContentType {
 ///  }
 abstract class Content implements Mapper {
 
-  /// content type
+  /// message type
   int get type;
 
   /// serial number as message id
@@ -162,13 +162,13 @@ abstract class Content implements Mapper {
     return man.generalFactory.parseContent(content);
   }
 
-  static ContentFactory? getFactory(int type) {
+  static ContentFactory? getFactory(int msgType) {
     MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getContentFactory(type);
+    return man.generalFactory.getContentFactory(msgType);
   }
-  static void setFactory(int type, ContentFactory? factory) {
+  static void setFactory(int msgType, ContentFactory? factory) {
     MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setContentFactory(type, factory);
+    man.generalFactory.setContentFactory(msgType, factory);
   }
 }
 
