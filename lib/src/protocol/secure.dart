@@ -56,11 +56,11 @@ import 'reliable.dart';
 ///  }
 abstract class SecureMessage implements Message {
 
-  Uint8List get data;
+  Future<Uint8List> get data;
 
-  Uint8List? get encryptedKey;
+  Future<Uint8List?> get encryptedKey;
 
-  Map? get encryptedKeys;
+  Map<String, dynamic>? get encryptedKeys;
 
   /*
    *  Decrypt the Secure Message to Instant Message
@@ -78,7 +78,7 @@ abstract class SecureMessage implements Message {
   ///  Decrypt message, replace encrypted 'data' with 'content' field
   ///
   /// @return InstantMessage object
-  InstantMessage? decrypt();
+  Future<InstantMessage?> decrypt();
 
   /*
    *  Sign the Secure Message to Reliable Message
@@ -97,7 +97,7 @@ abstract class SecureMessage implements Message {
   ///  Sign message.data, add 'signature' field
   ///
   /// @return ReliableMessage object
-  ReliableMessage sign();
+  Future<ReliableMessage> sign();
 
   /*
    *  Split/Trim group message
@@ -150,7 +150,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   /// @param key - base64 string object
   /// @param sMsg - secure message object
   /// @return encrypted symmetric key data
-  Uint8List? decodeKey(Object key, SecureMessage sMsg);
+  Future<Uint8List?> decodeKey(Object key, SecureMessage sMsg);
 
   ///  2. Decrypt 'message.key' with receiver's private key
   ///
@@ -159,7 +159,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   ///  @param receiver - receiver/group ID string
   ///  @param sMsg - secure message object
   ///  @return serialized symmetric key
-  Uint8List? decryptKey(Uint8List key, ID sender, ID receiver, SecureMessage sMsg);
+  Future<Uint8List?> decryptKey(Uint8List key, ID sender, ID receiver, SecureMessage sMsg);
 
   ///  3. Deserialize message key from data (JsON / ProtoBuf / ...)
   ///
@@ -168,7 +168,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   /// @param receiver - receiver/group ID string
   /// @param sMsg - secure message object
   /// @return symmetric key
-  SymmetricKey? deserializeKey(Uint8List? key, ID sender, ID receiver, SecureMessage sMsg);
+  Future<SymmetricKey?> deserializeKey(Uint8List? key, ID sender, ID receiver, SecureMessage sMsg);
 
   //
   //  Decrypt Content
@@ -179,7 +179,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   /// @param data - base64 string object
   /// @param sMsg - secure message object
   /// @return encrypted content data
-  Uint8List? decodeData(Object data, SecureMessage sMsg);
+  Future<Uint8List?> decodeData(Object data, SecureMessage sMsg);
 
   ///  5. Decrypt 'message.data' with symmetric key
   ///
@@ -187,7 +187,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   ///  @param password - symmetric key
   ///  @param sMsg - secure message object
   ///  @return serialized message content
-  Uint8List? decryptContent(Uint8List data, SymmetricKey password, SecureMessage sMsg);
+  Future<Uint8List?> decryptContent(Uint8List data, SymmetricKey password, SecureMessage sMsg);
 
   ///  6. Deserialize message content from data (JsON / ProtoBuf / ...)
   ///
@@ -195,7 +195,7 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   /// @param password - symmetric key
   /// @param sMsg - secure message object
   /// @return message content
-  Content? deserializeContent(Uint8List data, SymmetricKey password, SecureMessage sMsg);
+  Future<Content?> deserializeContent(Uint8List data, SymmetricKey password, SecureMessage sMsg);
 
   //
   //  Signature
@@ -207,14 +207,14 @@ abstract class SecureMessageDelegate implements MessageDelegate {
   ///  @param sender - sender ID string
   ///  @param sMsg - secure message object
   ///  @return signature of encrypted message data
-  Uint8List signData(Uint8List data, ID sender, SecureMessage sMsg);
+  Future<Uint8List> signData(Uint8List data, ID sender, SecureMessage sMsg);
 
   ///  2. Encode 'message.signature' to String (Base64)
   ///
   /// @param signature - signature of message.data
   /// @param sMsg - secure message object
   /// @return String object
-  Object encodeSignature(Uint8List signature, SecureMessage sMsg);
+  Future<Object> encodeSignature(Uint8List signature, SecureMessage sMsg);
 }
 
 

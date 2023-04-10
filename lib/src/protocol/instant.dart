@@ -72,7 +72,7 @@ abstract class InstantMessage implements Message {
   /// @param password - symmetric key
   /// @param members - group members for group message
   /// @return SecureMessage object, null on visa not found
-  SecureMessage? encrypt(SymmetricKey password, {List<ID>? members});
+  Future<SecureMessage?> encrypt(SymmetricKey password, {List<ID>? members});
 
   //
   //  Factory methods
@@ -118,7 +118,7 @@ abstract class InstantMessageDelegate implements MessageDelegate {
   /// @param content - message.content
   /// @param password - symmetric key
   /// @return serialized content data
-  Uint8List serializeContent(Content content, SymmetricKey password, InstantMessage iMsg);
+  Future<Uint8List> serializeContent(Content content, SymmetricKey password, InstantMessage iMsg);
 
   ///  2. Encrypt content data to 'message.data' with symmetric key
   ///
@@ -126,14 +126,14 @@ abstract class InstantMessageDelegate implements MessageDelegate {
   /// @param data - serialized data of message.content
   /// @param password - symmetric key
   /// @return encrypted message content data
-  Uint8List encryptContent(Uint8List data, SymmetricKey password, InstantMessage iMsg);
+  Future<Uint8List> encryptContent(Uint8List data, SymmetricKey password, InstantMessage iMsg);
 
   ///  3. Encode 'message.data' to String (Base64)
   ///
   /// @param iMsg - instant message object
   /// @param data - encrypted content data
   /// @return String object
-  Object encodeData(Uint8List data, InstantMessage iMsg);
+  Future<Object> encodeData(Uint8List data, InstantMessage iMsg);
 
   //
   //  Encrypt Key
@@ -144,7 +144,7 @@ abstract class InstantMessageDelegate implements MessageDelegate {
   /// @param iMsg - instant message object
   /// @param password - symmetric key
   /// @return serialized key data, null for broadcast message
-  Uint8List? serializeKey(SymmetricKey password, InstantMessage iMsg);
+  Future<Uint8List?> serializeKey(SymmetricKey password, InstantMessage iMsg);
 
   ///  5. Encrypt key data to 'message.key' with receiver's public key
   ///
@@ -152,14 +152,14 @@ abstract class InstantMessageDelegate implements MessageDelegate {
   /// @param key - serialized data of symmetric key
   /// @param receiver - receiver ID string
   /// @return encrypted symmetric key data, null on visa not found
-  Uint8List? encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);
+  Future<Uint8List?> encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);
 
   ///  6. Encode 'message.key' to String (Base64)
   ///
   /// @param iMsg - instant message object
   /// @param key - encrypted symmetric key data
   /// @return String object
-  Object encodeKey(Uint8List key, InstantMessage iMsg);
+  Future<Object> encodeKey(Uint8List key, InstantMessage iMsg);
 }
 
 

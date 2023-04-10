@@ -56,7 +56,7 @@ import 'secure.dart';
 ///  }
 abstract class ReliableMessage implements SecureMessage {
 
-  Uint8List get signature;
+  Future<Uint8List> get signature;
 
   ///  Sender's Meta
   ///  ~~~~~~~~~~~~~
@@ -91,7 +91,7 @@ abstract class ReliableMessage implements SecureMessage {
   ///  Verify 'data' and 'signature' field with sender's public key
   ///
   /// @return SecureMessage object, null on signature error
-  SecureMessage? verify();
+  Future<SecureMessage?> verify();
 
   //
   //  Factory method
@@ -122,7 +122,7 @@ abstract class ReliableMessageDelegate implements SecureMessageDelegate {
   /// @param signature - base64 string object
   /// @param rMsg - reliable message
   /// @return signature data
-  Uint8List? decodeSignature(Object signature, ReliableMessage rMsg);
+  Future<Uint8List?> decodeSignature(Object signature, ReliableMessage rMsg);
 
   ///  2. Verify the message data and signature with sender's public key
   ///
@@ -131,7 +131,7 @@ abstract class ReliableMessageDelegate implements SecureMessageDelegate {
   ///  @param sender - sender ID/string
   ///  @param rMsg - reliable message object
   ///  @return YES on signature matched
-  bool verifyDataSignature(Uint8List data, Uint8List signature, ID sender, ReliableMessage rMsg);
+  Future<bool> verifyDataSignature(Uint8List data, Uint8List signature, ID sender, ReliableMessage rMsg);
 }
 
 
