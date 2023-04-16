@@ -69,7 +69,8 @@ class MessageGeneralFactory {
   }
 
   int? getContentType(Map content) {
-    return Converter.getInt(content['type']);
+    // return Converter.getInt(content['type']);
+    return content['type'];
   }
 
   Content? parseContent(Object? content) {
@@ -85,10 +86,11 @@ class MessageGeneralFactory {
     }
     // get factory by message type
     int? type = getContentType(info);
+    assert(type != null, 'message type not found: $info');
     ContentFactory? factory = type == null ? null : getContentFactory(type);
     if (factory == null && type != 0) {
       factory = getContentFactory(0);  // unknown
-      assert(factory != null, 'cannot parse content: $content');
+      assert(factory != null, 'cannot parse content: $info');
     }
     return factory?.parseContent(info);
   }

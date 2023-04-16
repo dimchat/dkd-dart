@@ -1,3 +1,7 @@
+## 0.1.0-dev.5
+
+- Envelope type can be null.
+
 ## 0.1.0-dev.4
 
 - Value converter.
