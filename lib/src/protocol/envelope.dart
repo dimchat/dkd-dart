@@ -67,8 +67,8 @@ abstract class Envelope implements Mapper {
   ///  the intermediate nodes(station) cannot recognize what kind of it.
   ///  we pick out the content type and set it in envelope
   ///  to let the station do its job.
-  int get type;
-  set type(int msgType);
+  int? get type;
+  set type(int? msgType);
 
   //
   //  Factory methods
