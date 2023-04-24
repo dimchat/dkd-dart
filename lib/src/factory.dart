@@ -45,6 +45,10 @@ class MessageFactoryManager {
 }
 
 class MessageGeneralFactory {
+  MessageGeneralFactory(): _envelopeFactory = null,
+        _instantMessageFactory = null,
+        _secureMessageFactory = null,
+        _reliableMessageFactory = null;
 
   final Map<int, ContentFactory> _contentFactories = {};
 
