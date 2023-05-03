@@ -60,7 +60,8 @@ abstract class SecureMessage implements Message {
 
   Future<Uint8List?> get encryptedKey;
 
-  Map<String, dynamic>? get encryptedKeys;
+  // String => String
+  Future<Map?> get encryptedKeys;
 
   /*
    *  Decrypt the Secure Message to Instant Message
@@ -109,13 +110,13 @@ abstract class SecureMessage implements Message {
   ///
   ///  @param members - group members
   ///  @return secure/reliable message(s)
-  List<SecureMessage> split(List<ID> members);
+  Future<List<SecureMessage>> split(List<ID> members);
 
   ///  Trim the group message for a member
   ///
   /// @param member - group member ID/string
   /// @return SecureMessage
-  SecureMessage trim(ID member);
+  Future<SecureMessage> trim(ID member);
 
   //
   //  Factory method

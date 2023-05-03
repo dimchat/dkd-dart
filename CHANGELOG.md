@@ -1,3 +1,7 @@
+## 0.1.0-dev.8
+
+- Async trim/split.
+
 ## 0.1.0-dev.7
 
 - Empty meta key.
