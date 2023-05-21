@@ -61,12 +61,8 @@ class MessageGeneralFactory {
   //  Content
   //
 
-  void setContentFactory(int msgType, ContentFactory? factory) {
-    if (factory == null) {
-      _contentFactories.remove(msgType);
-    } else {
-      _contentFactories[msgType] = factory;
-    }
+  void setContentFactory(int msgType, ContentFactory factory) {
+    _contentFactories[msgType] = factory;
   }
   ContentFactory? getContentFactory(int msgType) {
     return _contentFactories[msgType];
@@ -90,12 +86,12 @@ class MessageGeneralFactory {
     }
     // get factory by message type
     int? type = getContentType(info);
-    assert(type != null, 'message type not found: $info');
-    ContentFactory? factory = type == null ? null : getContentFactory(type);
+    type ??= 0;
+    ContentFactory? factory = getContentFactory(type);
     if (factory == null && type != 0) {
       factory = getContentFactory(0);  // unknown
-      assert(factory != null, 'cannot parse content: $info');
     }
+    assert(factory != null, 'cannot parse content: $info');
     return factory?.parseContent(info);
   }
 
@@ -103,7 +99,7 @@ class MessageGeneralFactory {
   //  Envelope
   //
 
-  void setEnvelopeFactory(EnvelopeFactory? factory) {
+  void setEnvelopeFactory(EnvelopeFactory factory) {
     _envelopeFactory = factory;
   }
   EnvelopeFactory? getEnvelopeFactory() {
@@ -136,7 +132,7 @@ class MessageGeneralFactory {
   //  InstantMessage
   //
 
-  void setInstantMessageFactory(InstantMessageFactory? factory) {
+  void setInstantMessageFactory(InstantMessageFactory factory) {
     _instantMessageFactory = factory;
   }
   InstantMessageFactory? getInstantMessageFactory() {
@@ -175,7 +171,7 @@ class MessageGeneralFactory {
   //  SecureMessage
   //
 
-  void setSecureMessageFactory(SecureMessageFactory? factory) {
+  void setSecureMessageFactory(SecureMessageFactory factory) {
     _secureMessageFactory = factory;
   }
   SecureMessageFactory? getSecureMessageFactory() {
@@ -202,7 +198,7 @@ class MessageGeneralFactory {
   //  ReliableMessage
   //
 
-  void setReliableMessageFactory(ReliableMessageFactory? factory) {
+  void setReliableMessageFactory(ReliableMessageFactory factory) {
     _reliableMessageFactory = factory;
   }
   ReliableMessageFactory? getReliableMessageFactory() {

@@ -1,3 +1,7 @@
+## 0.1.0-dev.9
+
+- Set non-null factory.
+
 ## 0.1.0-dev.8
 
 - Async trim/split.

@@ -106,7 +106,7 @@ abstract class ReliableMessage implements SecureMessage {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.getReliableMessageFactory();
   }
-  static void setFactory(ReliableMessageFactory? factory) {
+  static void setFactory(ReliableMessageFactory factory) {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setReliableMessageFactory(factory);
   }

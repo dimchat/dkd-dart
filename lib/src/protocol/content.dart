@@ -166,7 +166,7 @@ abstract class Content implements Mapper {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.getContentFactory(msgType);
   }
-  static void setFactory(int msgType, ContentFactory? factory) {
+  static void setFactory(int msgType, ContentFactory factory) {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setContentFactory(msgType, factory);
   }

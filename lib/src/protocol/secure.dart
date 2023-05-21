@@ -131,7 +131,7 @@ abstract class SecureMessage implements Message {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.getSecureMessageFactory();
   }
-  static void setFactory(SecureMessageFactory? factory) {
+  static void setFactory(SecureMessageFactory factory) {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setSecureMessageFactory(factory);
   }

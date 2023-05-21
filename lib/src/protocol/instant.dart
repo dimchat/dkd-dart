@@ -99,7 +99,7 @@ abstract class InstantMessage implements Message {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.getInstantMessageFactory();
   }
-  static void setFactory(InstantMessageFactory? factory) {
+  static void setFactory(InstantMessageFactory factory) {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setInstantMessageFactory(factory);
   }

@@ -88,7 +88,7 @@ abstract class Envelope implements Mapper {
     MessageFactoryManager man = MessageFactoryManager();
     return man.generalFactory.getEnvelopeFactory();
   }
-  static void setFactory(EnvelopeFactory? factory) {
+  static void setFactory(EnvelopeFactory factory) {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setEnvelopeFactory(factory);
   }
