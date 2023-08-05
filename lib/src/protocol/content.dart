@@ -89,15 +89,20 @@ class ContentType {
   /// Web Page
   static const int kPage    = (0x20); // 0010 0000
 
-  /// Quote a message before and reply it with text
-  static const int kQuote   = (0x37); // 0011 0111
+  /// Name Card
+  static const int kNameCard = (0x33); // 0011 0011
 
+  /// Quote a message before and reply it with text
+  static const int kQuote    = (0x37); // 0011 0111
+
+  /// Money
   static const int kMoney         = (0x40); // 0100 0000
   static const int kTransfer      = (0x41); // 0100 0001
   static const int kLuckyMoney    = (0x42); // 0100 0010
   static const int kClaimPayment  = (0x48); // 0100 1000 (Claim for Payment)
   static const int kSplitBill     = (0x49); // 0100 1001 (Split the Bill)
 
+  /// Command
   static const int kCommand = (0x88); // 1000 1000
   static const int kHistory = (0x89); // 1000 1001 (Entity History Command)
 
