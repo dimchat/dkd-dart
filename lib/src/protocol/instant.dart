@@ -28,14 +28,10 @@
  * SOFTWARE.
  * ==============================================================================
  */
-import 'dart:typed_data';
+import '../msg/factory.dart';
 
-import 'package:mkm/mkm.dart';
-
-import '../factory.dart';
 import 'content.dart';
 import 'envelope.dart';
-import 'secure.dart';
 
 ///  Instant Message
 ///  ~~~~~~~~~~~~~~~
@@ -54,27 +50,6 @@ abstract class InstantMessage implements Message {
   Content get content;
   // only for rebuild content
   set content(Content body);
-
-  /*
-   *  Encrypt the Instant Message to Secure Message
-   *
-   *    +----------+      +----------+
-   *    | sender   |      | sender   |
-   *    | receiver |      | receiver |
-   *    | time     |  ->  | time     |
-   *    |          |      |          |
-   *    | content  |      | data     |  1. data = encrypt(content, PW)
-   *    +----------+      | key/keys |  2. key  = encrypt(PW, receiver.PK)
-   *                      +----------+
-   */
-
-  /// 1. Encrypt message, replace 'content' field with encrypted 'data'
-  /// 2. Encrypt group message, replace 'content' field with encrypted 'data'
-  ///
-  /// @param password - symmetric key
-  /// @param members - group members for group message
-  /// @return SecureMessage object, null on visa not found
-  Future<SecureMessage?> encrypt(SymmetricKey password, {List<ID>? members});
 
   //
   //  Factory methods
@@ -103,65 +78,6 @@ abstract class InstantMessage implements Message {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setInstantMessageFactory(factory);
   }
-}
-
-
-///  Instant Message Delegate
-///  ~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class InstantMessageDelegate implements MessageDelegate {
-
-  //
-  //  Encrypt Content
-  //
-
-  ///  1. Serialize 'message.content' to data (JsON / ProtoBuf / ...)
-  ///
-  /// @param iMsg - instant message object
-  /// @param content - message.content
-  /// @param password - symmetric key
-  /// @return serialized content data
-  Future<Uint8List> serializeContent(Content content, SymmetricKey password, InstantMessage iMsg);
-
-  ///  2. Encrypt content data to 'message.data' with symmetric key
-  ///
-  /// @param iMsg - instant message object
-  /// @param data - serialized data of message.content
-  /// @param password - symmetric key
-  /// @return encrypted message content data
-  Future<Uint8List> encryptContent(Uint8List data, SymmetricKey password, InstantMessage iMsg);
-
-  ///  3. Encode 'message.data' to String (Base64)
-  ///
-  /// @param iMsg - instant message object
-  /// @param data - encrypted content data
-  /// @return String object
-  Future<Object> encodeData(Uint8List data, InstantMessage iMsg);
-
-  //
-  //  Encrypt Key
-  //
-
-  ///  4. Serialize message key to data (JsON / ProtoBuf / ...)
-  ///
-  /// @param iMsg - instant message object
-  /// @param password - symmetric key
-  /// @return serialized key data, null for broadcast message
-  Future<Uint8List?> serializeKey(SymmetricKey password, InstantMessage iMsg);
-
-  ///  5. Encrypt key data to 'message.key' with receiver's public key
-  ///
-  /// @param iMsg - instant message object
-  /// @param key - serialized data of symmetric key
-  /// @param receiver - receiver ID string
-  /// @return encrypted symmetric key data, null on visa not found
-  Future<Uint8List?> encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);
-
-  ///  6. Encode 'message.key' to String (Base64)
-  ///
-  /// @param iMsg - instant message object
-  /// @param key - encrypted symmetric key data
-  /// @return String object
-  Future<Object> encodeKey(Uint8List key, InstantMessage iMsg);
 }
 
 

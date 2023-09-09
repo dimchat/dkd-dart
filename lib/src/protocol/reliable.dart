@@ -32,7 +32,8 @@ import 'dart:typed_data';
 
 import 'package:mkm/mkm.dart';
 
-import '../factory.dart';
+import '../msg/factory.dart';
+
 import 'secure.dart';
 
 ///  Reliable Message signed by an asymmetric key
@@ -74,27 +75,8 @@ abstract class ReliableMessage implements SecureMessage {
   set visa(Visa? doc);
   Visa? get visa;
 
-  /*
-   *  Verify the Reliable Message to Secure Message
-   *
-   *    +----------+      +----------+
-   *    | sender   |      | sender   |
-   *    | receiver |      | receiver |
-   *    | time     |  ->  | time     |
-   *    |          |      |          |
-   *    | data     |      | data     |  1. verify(data, signature, sender.PK)
-   *    | key/keys |      | key/keys |
-   *    | signature|      +----------+
-   *    +----------+
-   */
-
-  ///  Verify 'data' and 'signature' field with sender's public key
-  ///
-  /// @return SecureMessage object, null on signature error
-  Future<SecureMessage?> verify();
-
   //
-  //  Factory method
+  //  Factory methods
   //
 
   static ReliableMessage? parse(Object? msg) {
@@ -110,28 +92,6 @@ abstract class ReliableMessage implements SecureMessage {
     MessageFactoryManager man = MessageFactoryManager();
     man.generalFactory.setReliableMessageFactory(factory);
   }
-}
-
-
-///  Reliable Message Delegate
-///  ~~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class ReliableMessageDelegate implements SecureMessageDelegate {
-
-  ///  1. Decode 'message.signature' from String (Base64)
-  ///
-  /// @param signature - base64 string object
-  /// @param rMsg - reliable message
-  /// @return signature data
-  Future<Uint8List?> decodeSignature(Object signature, ReliableMessage rMsg);
-
-  ///  2. Verify the message data and signature with sender's public key
-  ///
-  ///  @param data - message content(encrypted) data
-  ///  @param signature - signature for message content(encrypted) data
-  ///  @param sender - sender ID/string
-  ///  @param rMsg - reliable message object
-  ///  @return YES on signature matched
-  Future<bool> verifyDataSignature(Uint8List data, Uint8List signature, ID sender, ReliableMessage rMsg);
 }
 
 

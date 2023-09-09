@@ -30,7 +30,7 @@
  */
 import 'package:mkm/mkm.dart';
 
-import '../factory.dart';
+import '../msg/factory.dart';
 
 ///  Envelope for message
 ///  ~~~~~~~~~~~~~~~~~~~~
@@ -151,10 +151,6 @@ abstract class EnvelopeFactory {
 ///  }
 abstract class Message implements Mapper {
 
-  /// message delegate
-  MessageDelegate? get delegate;
-  set delegate(MessageDelegate? transceiver);
-
   /// message envelope
   Envelope get envelope;
 
@@ -164,9 +160,4 @@ abstract class Message implements Mapper {
 
   ID? get group;       // content.group or envelope.group
   int? get type;        // content.type or envelope.type
-}
-
-///  Message Delegate
-///  ~~~~~~~~~~~~~~~~
-abstract class MessageDelegate {
 }

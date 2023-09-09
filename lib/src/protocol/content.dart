@@ -30,7 +30,7 @@
  */
 import 'package:mkm/mkm.dart';
 
-import '../factory.dart';
+import '../msg/factory.dart';
 
 ///  @enum DKDContentType
 ///

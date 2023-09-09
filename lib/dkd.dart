@@ -9,4 +9,4 @@ export 'src/protocol/instant.dart';
 export 'src/protocol/secure.dart';
 export 'src/protocol/reliable.dart';
 
-export 'src/factory.dart';
+export 'src/msg/factory.dart';

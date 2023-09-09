@@ -30,11 +30,11 @@
  */
 import 'package:mkm/mkm.dart';
 
-import 'protocol/content.dart';
-import 'protocol/envelope.dart';
-import 'protocol/instant.dart';
-import 'protocol/reliable.dart';
-import 'protocol/secure.dart';
+import '../protocol/content.dart';
+import '../protocol/envelope.dart';
+import '../protocol/instant.dart';
+import '../protocol/reliable.dart';
+import '../protocol/secure.dart';
 
 class MessageFactoryManager {
   factory MessageFactoryManager() => _instance;
@@ -68,9 +68,8 @@ class MessageGeneralFactory {
     return _contentFactories[msgType];
   }
 
-  int? getContentType(Map content) {
-    // return Converter.getInt(content['type']);
-    return content['type'];
+  int? getContentType(Map content, int? defaultValue) {
+    return Converter.getInt(content['type'], defaultValue);
   }
 
   Content? parseContent(Object? content) {
@@ -84,9 +83,8 @@ class MessageGeneralFactory {
       assert(false, 'content error: $content');
       return null;
     }
-    // get factory by message type
-    int? type = getContentType(info);
-    type ??= 0;
+    // get factory by content type
+    int type = getContentType(info, 0)!;
     ContentFactory? factory = getContentFactory(type);
     if (factory == null && type != 0) {
       factory = getContentFactory(0);  // unknown

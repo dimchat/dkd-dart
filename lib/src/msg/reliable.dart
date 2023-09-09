@@ -30,62 +30,36 @@
  */
 import 'dart:typed_data';
 
-import '../msg/factory.dart';
+import '../protocol/reliable.dart';
 
-import 'envelope.dart';
-
-///  Secure Message
-///  ~~~~~~~~~~~~~~
-///  Instant Message encrypted by a symmetric key
-///
-///  data format: {
-///      //-- envelope
-///      sender   : "moki@xxx",
-///      receiver : "hulk@yyy",
-///      time     : 123,
-///      //-- content data and key/keys
-///      data     : "...",  // base64_encode(symmetric)
-///      key      : "...",  // base64_encode(asymmetric)
-///      keys     : {
-///          "ID1": "key1", // base64_encode(asymmetric)
-///      }
-///  }
-abstract class SecureMessage implements Message {
-
-  Future<Uint8List> get data;
-
-  Future<Uint8List?> get encryptedKey;
-
-  // String => String
-  Future<Map?> get encryptedKeys;
-
-  //
-  //  Factory methods
-  //
-
-  static SecureMessage? parse(Object? msg) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseSecureMessage(msg);
-  }
-
-  static SecureMessageFactory? getFactory() {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getSecureMessageFactory();
-  }
-  static void setFactory(SecureMessageFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setSecureMessageFactory(factory);
-  }
-}
+import 'secure.dart';
 
 
-///  Message Factory
-///  ~~~~~~~~~~~~~~~
-abstract class SecureMessageFactory {
+///  Reliable Message Delegate
+///  ~~~~~~~~~~~~~~~~~~~~~~~~~
+abstract class ReliableMessageDelegate implements SecureMessageDelegate {
 
-  ///  Parse map object to message
+  /*
+   *  Verify the Reliable Message to Secure Message
+   *
+   *    +----------+      +----------+
+   *    | sender   |      | sender   |
+   *    | receiver |      | receiver |
+   *    | time     |  ->  | time     |
+   *    |          |      |          |
+   *    | data     |      | data     |  1. verify(data, signature, sender.PK)
+   *    | key/keys |      | key/keys |
+   *    | signature|      +----------+
+   *    +----------+
+   */
+
+  //  1. Decode 'message.signature' from String (Base64)
+
+  ///  2. Verify the message data and signature with sender's public key
   ///
-  /// @param msg - message info
-  /// @return SecureMessage
-  SecureMessage? parseSecureMessage(Map msg);
+  ///  @param data      - message content(encrypted) data
+  ///  @param signature - signature for message content(encrypted) data
+  ///  @param rMsg      - reliable message object
+  ///  @return YES on signature matched
+  Future<bool> verifyDataSignature(Uint8List data, Uint8List signature, ReliableMessage rMsg);
 }
