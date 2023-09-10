@@ -1,3 +1,7 @@
+## 0.2.1
+
+- ReliableMessageDelegate.
+
 ## 0.2.0
 
 - Simplify message delegate.

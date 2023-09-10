@@ -32,12 +32,10 @@ import 'dart:typed_data';
 
 import '../protocol/reliable.dart';
 
-import 'secure.dart';
-
 
 ///  Reliable Message Delegate
 ///  ~~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class ReliableMessageDelegate implements SecureMessageDelegate {
+abstract class ReliableMessageDelegate/* implements SecureMessageDelegate*/ {
 
   /*
    *  Verify the Reliable Message to Secure Message
