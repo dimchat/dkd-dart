@@ -159,5 +159,5 @@ abstract class Message implements Mapper {
   DateTime? get time;  // content.time or envelope.time
 
   ID? get group;       // content.group or envelope.group
-  int? get type;        // content.type or envelope.type
+  int? get type;       // content.type or envelope.type
 }

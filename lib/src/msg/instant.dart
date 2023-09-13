@@ -56,7 +56,7 @@ abstract class InstantMessageDelegate {
   ///  1. Serialize 'message.content' to data (JsON / ProtoBuf / ...)
   ///
   /// @param content  - message.content
-  /// @param password - symmetric key
+  /// @param password - symmetric key (includes data compression algorithm)
   /// @param iMsg     - instant message object
   /// @return serialized content data
   Future<Uint8List> serializeContent(Content content, SymmetricKey password, InstantMessage iMsg);
@@ -75,13 +75,13 @@ abstract class InstantMessageDelegate {
   ///
   /// @param password - symmetric key
   /// @param iMsg     - instant message object
-  /// @return serialized key data, null for broadcast message
+  /// @return serialized key data, null for reused (or broadcast message)
   Future<Uint8List?> serializeKey(SymmetricKey password, InstantMessage iMsg);
 
   ///  5. Encrypt key data to 'message.key' with receiver's public key
   ///
   /// @param key      - serialized data of symmetric key
-  /// @param receiver - receiver ID string
+  /// @param receiver - actual receiver (user, or group member)
   /// @param iMsg     - instant message object
   /// @return encrypted symmetric key data, null on visa not found
   Future<Uint8List?> encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);

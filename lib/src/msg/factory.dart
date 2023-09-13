@@ -36,6 +36,8 @@ import '../protocol/instant.dart';
 import '../protocol/reliable.dart';
 import '../protocol/secure.dart';
 
+/// Message FactoryManager
+/// ~~~~~~~~~~~~~~~~~~~~~~
 class MessageFactoryManager {
   factory MessageFactoryManager() => _instance;
   static final MessageFactoryManager _instance = MessageFactoryManager._internal();
@@ -44,6 +46,8 @@ class MessageFactoryManager {
   MessageGeneralFactory generalFactory = MessageGeneralFactory();
 }
 
+/// Message GeneralFactory
+/// ~~~~~~~~~~~~~~~~~~~~~~
 class MessageGeneralFactory {
   MessageGeneralFactory(): _envelopeFactory = null,
         _instantMessageFactory = null,
@@ -162,7 +166,7 @@ class MessageGeneralFactory {
   int generateSerialNumber(int msgType, DateTime now) {
     InstantMessageFactory? factory = getInstantMessageFactory();
     assert(factory != null, 'instant message factory not ready');
-    return factory == null ? 0 : factory.generateSerialNumber(msgType, now);
+    return factory!.generateSerialNumber(msgType, now);
   }
 
   //

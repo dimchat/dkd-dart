@@ -58,18 +58,18 @@ abstract class SecureMessageDelegate {
   ///  2. Decrypt 'message.key' with receiver's private key
   ///
   ///  @param key      - encrypted symmetric key data
-  ///  @param receiver - receiver/group ID string
+  ///  @param receiver - actual receiver (user, or group member)
   ///  @param sMsg     - secure message object
   ///  @return serialized symmetric key
   Future<Uint8List?> decryptKey(Uint8List key, ID receiver, SecureMessage sMsg);
 
   ///  3. Deserialize message key from data (JsON / ProtoBuf / ...)
+  ///     (if key data is empty, means it should be reused, get it from key cache)
   ///
   /// @param key      - serialized key data, null for reused key
-  /// @param receiver - receiver/group ID string
   /// @param sMsg     - secure message object
   /// @return symmetric key
-  Future<SymmetricKey?> deserializeKey(Uint8List? key, ID receiver, SecureMessage sMsg);
+  Future<SymmetricKey?> deserializeKey(Uint8List? key, SecureMessage sMsg);
 
   //  4. Decode 'message.data' to encrypted content data
 
@@ -84,7 +84,7 @@ abstract class SecureMessageDelegate {
   ///  6. Deserialize message content from data (JsON / ProtoBuf / ...)
   ///
   /// @param data     - serialized content data
-  /// @param password - symmetric key
+  /// @param password - symmetric key (includes data compression algorithm)
   /// @param sMsg     - secure message object
   /// @return message content
   Future<Content?> deserializeContent(Uint8List data, SymmetricKey password, SecureMessage sMsg);
