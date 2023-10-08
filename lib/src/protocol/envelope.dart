@@ -29,6 +29,7 @@
  * ==============================================================================
  */
 import 'package:mkm/mkm.dart';
+import 'package:mkm/type.dart';
 
 import '../msg/factory.dart';
 

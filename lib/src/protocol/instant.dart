@@ -89,7 +89,7 @@ abstract class InstantMessageFactory {
   ///
   /// @param msgType - content type
   /// @param now     - message time
-  /// @return SN (serial number as msg id)
+  /// @return SN (uint64, serial number as msg id)
   int generateSerialNumber(int msgType, DateTime now);
 
   ///  Create instant message with envelope & content

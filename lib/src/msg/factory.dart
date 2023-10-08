@@ -29,6 +29,7 @@
  * ==============================================================================
  */
 import 'package:mkm/mkm.dart';
+import 'package:mkm/type.dart';
 
 import '../protocol/content.dart';
 import '../protocol/envelope.dart';
@@ -89,11 +90,12 @@ class MessageGeneralFactory {
     }
     // get factory by content type
     int type = getContentType(info, 0)!;
+    assert(type > 0, 'content error: $content');
     ContentFactory? factory = getContentFactory(type);
-    if (factory == null && type != 0) {
+    if (factory == null) {
       factory = getContentFactory(0);  // unknown
+      assert(factory != null, 'default content factory not found');
     }
-    assert(factory != null, 'cannot parse content: $info');
     return factory?.parseContent(info);
   }
 

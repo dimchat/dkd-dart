@@ -47,13 +47,13 @@ import 'secure.dart';
 ///      receiver : "hulk@yyy",
 ///      time     : 123,
 ///      //-- content data and key/keys
-///      data     : "...",  // base64_encode(symmetric)
-///      key      : "...",  // base64_encode(asymmetric)
+///      data     : "...",  // base64_encode( symmetric_encrypt(content))
+///      key      : "...",  // base64_encode(asymmetric_encrypt(password))
 ///      keys     : {
-///          "ID1": "key1", // base64_encode(asymmetric)
+///          "ID1": "key1", // base64_encode(asymmetric_encrypt(password))
 ///      },
 ///      //-- signature
-///      signature: "..."   // base64_encode()
+///      signature: "..."   // base64_encode(asymmetric_sign(data))
 ///  }
 abstract class ReliableMessage implements SecureMessage {
 

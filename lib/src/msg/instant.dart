@@ -30,6 +30,7 @@
  */
 import 'dart:typed_data';
 
+import 'package:mkm/crypto.dart';
 import 'package:mkm/mkm.dart';
 
 import '../protocol/content.dart';
@@ -53,6 +54,10 @@ abstract class InstantMessageDelegate {
    *                      +----------+
    */
 
+  //
+  //  Encrypt Content
+  //
+
   ///  1. Serialize 'message.content' to data (JsON / ProtoBuf / ...)
   ///
   /// @param content  - message.content
@@ -69,7 +74,16 @@ abstract class InstantMessageDelegate {
   /// @return encrypted message content data
   Future<Uint8List> encryptContent(Uint8List data, SymmetricKey password, InstantMessage iMsg);
 
-  //  3. Encode 'message.data' to String (Base64)
+  // ///  3. Encode 'message.data' to String (Base64)
+  // ///
+  // /// @param data - encrypted content data
+  // /// @param iMsg - instant message object
+  // /// @return String object
+  // Future<Object> encodeData(Uint8List data, InstantMessage iMsg);
+
+  //
+  //  Encrypt Key
+  //
 
   ///  4. Serialize message key to data (JsON / ProtoBuf / ...)
   ///
@@ -86,5 +100,11 @@ abstract class InstantMessageDelegate {
   /// @return encrypted symmetric key data, null on visa not found
   Future<Uint8List?> encryptKey(Uint8List key, ID receiver, InstantMessage iMsg);
 
-  //  6. Encode 'message.key' to String (Base64)
+  // ///  6. Encode 'message.key' to String (Base64)
+  // ///
+  // /// @param key - encrypted symmetric key data
+  // /// @param iMsg - instant message object
+  // /// @return String object
+  // Future<Object> encodeKey(Uint8List key, InstantMessage iMsg);
+
 }

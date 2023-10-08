@@ -30,6 +30,7 @@
  */
 import 'dart:typed_data';
 
+import 'package:mkm/crypto.dart';
 import 'package:mkm/mkm.dart';
 
 import '../protocol/content.dart';
@@ -53,7 +54,16 @@ abstract class SecureMessageDelegate {
    *    +----------+
    */
 
-  //  1. Decode 'message.key' to encrypted symmetric key data
+  //
+  //  Decrypt Key
+  //
+
+  // ///  1. Decode 'message.key' to encrypted symmetric key data
+  // ///
+  // /// @param key - base64 string object
+  // /// @param sMsg - secure message object
+  // /// @return encrypted symmetric key data
+  // Future<Uint8List?> decodeKey(Object key, SecureMessage sMsg);
 
   ///  2. Decrypt 'message.key' with receiver's private key
   ///
@@ -71,7 +81,16 @@ abstract class SecureMessageDelegate {
   /// @return symmetric key
   Future<SymmetricKey?> deserializeKey(Uint8List? key, SecureMessage sMsg);
 
-  //  4. Decode 'message.data' to encrypted content data
+  //
+  //  Decrypt Content
+  //
+
+  // ///  4. Decode 'message.data' to encrypted content data
+  // ///
+  // /// @param data - base64 string object
+  // /// @param sMsg - secure message object
+  // /// @return encrypted content data
+  // Future<Uint8List?> decodeData(Object data, SecureMessage sMsg);
 
   ///  5. Decrypt 'message.data' with symmetric key
   ///
@@ -103,6 +122,10 @@ abstract class SecureMessageDelegate {
    *                      +----------+
    */
 
+  //
+  //  Signature
+  //
+
   ///  1. Sign 'message.data' with sender's private key
   ///
   ///  @param data - encrypted message data
@@ -110,5 +133,11 @@ abstract class SecureMessageDelegate {
   ///  @return signature of encrypted message data
   Future<Uint8List> signData(Uint8List data, SecureMessage sMsg);
 
-  //  2. Encode 'message.signature' to String (Base64)
+  // ///  2. Encode 'message.signature' to String (Base64)
+  // ///
+  // /// @param signature - signature of message.data
+  // /// @param sMsg - secure message object
+  // /// @return String object
+  // Future<Object> encodeSignature(Uint8List signature, SecureMessage sMsg);
+
 }
