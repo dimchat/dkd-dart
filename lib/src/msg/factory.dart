@@ -194,7 +194,7 @@ class MessageGeneralFactory {
       return null;
     }
     SecureMessageFactory? factory = getSecureMessageFactory();
-    assert(factory != null, 'instant message factory not ready');
+    assert(factory != null, 'secure message factory not ready');
     return factory?.parseSecureMessage(info);
   }
 
@@ -221,7 +221,7 @@ class MessageGeneralFactory {
       return null;
     }
     ReliableMessageFactory? factory = getReliableMessageFactory();
-    assert(factory != null, 'instant message factory not ready');
+    assert(factory != null, 'reliable message factory not ready');
     return factory?.parseReliableMessage(info);
   }
 }

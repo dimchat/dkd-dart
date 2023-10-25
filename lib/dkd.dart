@@ -1,6 +1,6 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// Dao-Ke-Dao
+/// ~~~~~~~~~~
+/// Universal Message Module
 library dkd;
 
 export 'src/protocol/content.dart';

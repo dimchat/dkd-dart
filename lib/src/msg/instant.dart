@@ -102,7 +102,7 @@ abstract class InstantMessageDelegate {
 
   // ///  6. Encode 'message.key' to String (Base64)
   // ///
-  // /// @param key - encrypted symmetric key data
+  // /// @param key  - encrypted symmetric key data
   // /// @param iMsg - instant message object
   // /// @return String object
   // Future<Object> encodeKey(Uint8List key, InstantMessage iMsg);

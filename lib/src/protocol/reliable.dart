@@ -30,8 +30,6 @@
  */
 import 'dart:typed_data';
 
-import 'package:mkm/mkm.dart';
-
 import '../msg/factory.dart';
 
 import 'secure.dart';
@@ -58,22 +56,6 @@ import 'secure.dart';
 abstract class ReliableMessage implements SecureMessage {
 
   Future<Uint8List> get signature;
-
-  ///  Sender's Meta
-  ///  ~~~~~~~~~~~~~
-  ///  Extends for the first message package of 'Handshake' protocol.
-  ///
-  /// @param info - Meta info
-  set meta(Meta? info);
-  Meta? get meta;
-
-  ///  Sender's Visa
-  ///  ~~~~~~~~~~~~~
-  ///  Extends for the first message package of 'Handshake' protocol.
-  ///
-  /// @param doc - Visa
-  set visa(Visa? doc);
-  Visa? get visa;
 
   //
   //  Factory methods

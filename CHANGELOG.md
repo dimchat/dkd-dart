@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Simplify message interface.
+
 ## 0.2.3
 
 - Split mkm to crypto + mkm.

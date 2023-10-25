@@ -60,7 +60,7 @@ abstract class SecureMessageDelegate {
 
   // ///  1. Decode 'message.key' to encrypted symmetric key data
   // ///
-  // /// @param key - base64 string object
+  // /// @param key  - base64 string object
   // /// @param sMsg - secure message object
   // /// @return encrypted symmetric key data
   // Future<Uint8List?> decodeKey(Object key, SecureMessage sMsg);
@@ -136,7 +136,7 @@ abstract class SecureMessageDelegate {
   // ///  2. Encode 'message.signature' to String (Base64)
   // ///
   // /// @param signature - signature of message.data
-  // /// @param sMsg - secure message object
+  // /// @param sMsg      - secure message object
   // /// @return String object
   // Future<Object> encodeSignature(Uint8List signature, SecureMessage sMsg);
 
