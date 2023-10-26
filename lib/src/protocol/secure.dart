@@ -50,7 +50,7 @@ import 'envelope.dart';
 ///          "ID1": "key1", // base64_encode(asymmetric_encrypt(password))
 ///      }
 ///  }
-abstract class SecureMessage implements Message {
+abstract interface class SecureMessage implements Message {
 
   Future<Uint8List> get data;
 
@@ -81,7 +81,7 @@ abstract class SecureMessage implements Message {
 
 ///  Message Factory
 ///  ~~~~~~~~~~~~~~~
-abstract class SecureMessageFactory {
+abstract interface class SecureMessageFactory {
 
   ///  Parse map object to message
   ///

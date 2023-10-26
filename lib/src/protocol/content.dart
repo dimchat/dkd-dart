@@ -144,7 +144,7 @@ class ContentType {
 ///      'command' : 'Command Name'  // for system command
 ///      //...
 ///  }
-abstract class Content implements Mapper {
+abstract interface class Content implements Mapper {
 
   /// message type
   int get type;
@@ -181,7 +181,7 @@ abstract class Content implements Mapper {
 
 ///  Content Factory
 ///  ~~~~~~~~~~~~~~~
-abstract class ContentFactory {
+abstract interface class ContentFactory {
 
   ///  Parse map object to content
   ///

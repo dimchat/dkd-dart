@@ -53,7 +53,7 @@ import 'secure.dart';
 ///      //-- signature
 ///      signature: "..."   // base64_encode(asymmetric_sign(data))
 ///  }
-abstract class ReliableMessage implements SecureMessage {
+abstract interface class ReliableMessage implements SecureMessage {
 
   Future<Uint8List> get signature;
 
@@ -79,7 +79,7 @@ abstract class ReliableMessage implements SecureMessage {
 
 ///  Message Factory
 ///  ~~~~~~~~~~~~~~~
-abstract class ReliableMessageFactory {
+abstract interface class ReliableMessageFactory {
 
   ///  Parse map object to message
   ///

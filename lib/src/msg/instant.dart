@@ -39,7 +39,7 @@ import '../protocol/instant.dart';
 
 ///  Instant Message Delegate
 ///  ~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class InstantMessageDelegate {
+abstract interface class InstantMessageDelegate {
 
   /*
    *  Encrypt the Instant Message to Secure Message

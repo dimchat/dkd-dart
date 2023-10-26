@@ -44,7 +44,7 @@ import 'envelope.dart';
 ///      //-- content
 ///      content  : {...}
 ///  }
-abstract class InstantMessage implements Message {
+abstract interface class InstantMessage implements Message {
 
   /// message content
   Content get content;
@@ -83,7 +83,7 @@ abstract class InstantMessage implements Message {
 
 ///  Message Factory
 ///  ~~~~~~~~~~~~~~~
-abstract class InstantMessageFactory {
+abstract interface class InstantMessageFactory {
 
   ///  Generate SN for message content
   ///

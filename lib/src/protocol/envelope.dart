@@ -43,7 +43,7 @@ import '../msg/factory.dart';
 ///      receiver : "hulk@yyy",
 ///      time     : 123
 ///  }
-abstract class Envelope implements Mapper {
+abstract interface class Envelope implements Mapper {
 
   /// message from
   ID get sender;
@@ -97,7 +97,7 @@ abstract class Envelope implements Mapper {
 
 ///  Envelope Factory
 ///  ~~~~~~~~~~~~~~~~
-abstract class EnvelopeFactory {
+abstract interface class EnvelopeFactory {
 
   ///  Create envelope
   ///
@@ -150,7 +150,7 @@ abstract class EnvelopeFactory {
 ///      //-- body
 ///      ...
 ///  }
-abstract class Message implements Mapper {
+abstract interface class Message implements Mapper {
 
   /// message envelope
   Envelope get envelope;
