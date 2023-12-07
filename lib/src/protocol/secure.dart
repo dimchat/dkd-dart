@@ -52,12 +52,12 @@ import 'envelope.dart';
 ///  }
 abstract interface class SecureMessage implements Message {
 
-  Future<Uint8List> get data;
+  Uint8List get data;
 
-  Future<Uint8List?> get encryptedKey;
+  Uint8List? get encryptedKey;
 
   // String => String
-  Future<Map?> get encryptedKeys;
+  Map? get encryptedKeys;
 
   //
   //  Factory methods

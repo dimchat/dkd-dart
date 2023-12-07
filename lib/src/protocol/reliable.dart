@@ -55,7 +55,7 @@ import 'secure.dart';
 ///  }
 abstract interface class ReliableMessage implements SecureMessage {
 
-  Future<Uint8List> get signature;
+  Uint8List get signature;
 
   //
   //  Factory methods
