@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Remove Future from message properties.
+
 ## 0.3.1
 
 - Strict interface.
