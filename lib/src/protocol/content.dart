@@ -110,16 +110,16 @@ class ContentType {
   /// Application Customized
   static const int kApplication      = (0xA0); // 1010 0000 (Application 0nly, Reserved)
   // static const int kApplication1  = (0xA1); // 1010 0001 (Reserved)
-                                               // 1010 ???? (Reserved)
+  // ...                                       // 1010 ???? (Reserved)
   // static const int kApplication15 = (0xAF); // 1010 1111 (Reserved)
 
   // static const int kCustomized0   = (0xC0); // 1100 0000 (Reserved)
   // static const int kCustomized1   = (0xC1); // 1100 0001 (Reserved)
-                                               // 1100 ???? (Reserved)
+  // ...                                       // 1100 ???? (Reserved)
   static const int kArray            = (0xCA); // 1100 1010 (Content Array)
-                                               // 1100 ???? (Reserved)
+  // ...                                       // 1100 ???? (Reserved)
   static const int kCustomized       = (0xCC); // 1100 1100 (Customized Content)
-                                               // 1100 ???? (Reserved)
+  // ...                                       // 1100 ???? (Reserved)
   // static const int kCustomized15  = (0xCF); // 1100 1111 (Reserved)
 
   /// Top-Secret message forward by proxy (MTA)

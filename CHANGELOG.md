@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Upgrade for MingKeMing
+
 ## 0.3.2
 
 - Remove Future from message properties.
