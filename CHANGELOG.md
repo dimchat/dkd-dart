@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Content types.
+
 ## 1.1.0
 
 - Constant identifier names.
