@@ -48,8 +48,8 @@ abstract interface class InstantMessage implements Message {
 
   /// message content
   Content get content;
-  // only for rebuild content
-  set content(Content body);
+  // // only for rebuild content
+  // set content(Content body);
 
   //
   //  Factory methods
