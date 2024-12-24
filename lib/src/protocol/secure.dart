@@ -30,9 +30,8 @@
  */
 import 'dart:typed_data';
 
-import '../msg/factory.dart';
-
 import 'envelope.dart';
+import 'helpers.dart';
 
 ///  Secure Message
 ///  ~~~~~~~~~~~~~~
@@ -64,17 +63,17 @@ abstract interface class SecureMessage implements Message {
   //
 
   static SecureMessage? parse(Object? msg) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseSecureMessage(msg);
+    var holder = MessageHolder();
+    return holder.secureHelper!.parseSecureMessage(msg);
   }
 
   static SecureMessageFactory? getFactory() {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getSecureMessageFactory();
+    var holder = MessageHolder();
+    return holder.secureHelper!.getSecureMessageFactory();
   }
   static void setFactory(SecureMessageFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setSecureMessageFactory(factory);
+    var holder = MessageHolder();
+    holder.secureHelper!.setSecureMessageFactory(factory);
   }
 }
 

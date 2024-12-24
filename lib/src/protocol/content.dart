@@ -31,7 +31,7 @@
 import 'package:mkm/mkm.dart';
 import 'package:mkm/type.dart';
 
-import '../msg/factory.dart';
+import 'helpers.dart';
 
 ///  Message Content
 ///  ~~~~~~~~~~~~~~~
@@ -70,17 +70,17 @@ abstract interface class Content implements Mapper {
   //
 
   static Content? parse(Object? content) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseContent(content);
+    var holder = MessageHolder();
+    return holder.contentHelper!.parseContent(content);
   }
 
   static ContentFactory? getFactory(int msgType) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getContentFactory(msgType);
+    var holder = MessageHolder();
+    return holder.contentHelper!.getContentFactory(msgType);
   }
   static void setFactory(int msgType, ContentFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setContentFactory(msgType, factory);
+    var holder = MessageHolder();
+    holder.contentHelper!.setContentFactory(msgType, factory);
   }
 }
 

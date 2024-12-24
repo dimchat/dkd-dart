@@ -31,7 +31,8 @@
 import 'package:mkm/mkm.dart';
 import 'package:mkm/type.dart';
 
-import '../msg/factory.dart';
+import 'helpers.dart';
+
 
 ///  Envelope for message
 ///  ~~~~~~~~~~~~~~~~~~~~
@@ -76,22 +77,22 @@ abstract interface class Envelope implements Mapper {
   //
 
   static Envelope create({required ID sender, required ID receiver, DateTime? time}) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.createEnvelope(sender: sender, receiver: receiver, time: time);
+    var holder = MessageHolder();
+    return holder.envelopeHelper!.createEnvelope(sender: sender, receiver: receiver, time: time);
   }
 
   static Envelope? parse(Object? env) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseEnvelope(env);
+    var holder = MessageHolder();
+    return holder.envelopeHelper!.parseEnvelope(env);
   }
 
   static EnvelopeFactory? getFactory() {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getEnvelopeFactory();
+    var holder = MessageHolder();
+    return holder.envelopeHelper!.getEnvelopeFactory();
   }
   static void setFactory(EnvelopeFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setEnvelopeFactory(factory);
+    var holder = MessageHolder();
+    holder.envelopeHelper!.setEnvelopeFactory(factory);
   }
 }
 

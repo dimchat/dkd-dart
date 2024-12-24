@@ -1,3 +1,7 @@
+## 1.2.0
+
+- General Helpers.
+
 ## 1.1.1
 
 - Content types.

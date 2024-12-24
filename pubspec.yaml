@@ -1,6 +1,6 @@
 name: dkd
 description: Universal Message Module (Dao-Ke-Dao).
-version: 1.1.1
+version: 1.2.0
 homepage: https://github.com/dimchat/dkd-dart
 repository: https://github.com/dimchat/dkd-dart
 issue_tracker: https://github.com/dimchat/dkd-dart/issues
@@ -10,7 +10,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  mkm: ^1.1.1
+  mkm: ^1.2.0
 
 dev_dependencies:
   lints: ^2.0.0

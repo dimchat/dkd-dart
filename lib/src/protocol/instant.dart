@@ -28,10 +28,9 @@
  * SOFTWARE.
  * ==============================================================================
  */
-import '../msg/factory.dart';
-
 import 'content.dart';
 import 'envelope.dart';
+import 'helpers.dart';
 
 ///  Instant Message
 ///  ~~~~~~~~~~~~~~~
@@ -56,27 +55,27 @@ abstract interface class InstantMessage implements Message {
   //
 
   static InstantMessage create(Envelope head, Content body) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.createInstantMessage(head, body);
+    var holder = MessageHolder();
+    return holder.instantHelper!.createInstantMessage(head, body);
   }
 
   static InstantMessage? parse(Object? msg) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseInstantMessage(msg);
+    var holder = MessageHolder();
+    return holder.instantHelper!.parseInstantMessage(msg);
   }
 
-  static int generateSerialNumber(int msgType, DateTime now) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.generateSerialNumber(msgType, now);
+  static int generateSerialNumber(int? msgType, DateTime? now) {
+    var holder = MessageHolder();
+    return holder.instantHelper!.generateSerialNumber(msgType, now);
   }
 
   static InstantMessageFactory? getFactory() {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getInstantMessageFactory();
+    var holder = MessageHolder();
+    return holder.instantHelper!.getInstantMessageFactory();
   }
   static void setFactory(InstantMessageFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setInstantMessageFactory(factory);
+    var holder = MessageHolder();
+    holder.instantHelper!.setInstantMessageFactory(factory);
   }
 }
 
@@ -90,7 +89,7 @@ abstract interface class InstantMessageFactory {
   /// @param msgType - content type
   /// @param now     - message time
   /// @return SN (uint64, serial number as msg id)
-  int generateSerialNumber(int msgType, DateTime now);
+  int generateSerialNumber(int? msgType, DateTime? now);
 
   ///  Create instant message with envelope & content
   ///

@@ -30,8 +30,7 @@
  */
 import 'dart:typed_data';
 
-import '../msg/factory.dart';
-
+import 'helpers.dart';
 import 'secure.dart';
 
 ///  Reliable Message signed by an asymmetric key
@@ -62,17 +61,17 @@ abstract interface class ReliableMessage implements SecureMessage {
   //
 
   static ReliableMessage? parse(Object? msg) {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.parseReliableMessage(msg);
+    var holder = MessageHolder();
+    return holder.reliableHelper!.parseReliableMessage(msg);
   }
 
   static ReliableMessageFactory? getFactory() {
-    MessageFactoryManager man = MessageFactoryManager();
-    return man.generalFactory.getReliableMessageFactory();
+    var holder = MessageHolder();
+    return holder.reliableHelper!.getReliableMessageFactory();
   }
   static void setFactory(ReliableMessageFactory factory) {
-    MessageFactoryManager man = MessageFactoryManager();
-    man.generalFactory.setReliableMessageFactory(factory);
+    var holder = MessageHolder();
+    holder.reliableHelper!.setReliableMessageFactory(factory);
   }
 }
 
