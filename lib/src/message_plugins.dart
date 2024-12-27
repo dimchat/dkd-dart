@@ -46,45 +46,45 @@ abstract interface class GeneralMessageHelper /*
 
 /// Message FactoryManager
 /// ~~~~~~~~~~~~~~~~~~~~~~
-class SharedMessageHolder {
-  factory SharedMessageHolder() => _instance;
-  static final SharedMessageHolder _instance = SharedMessageHolder._internal();
-  SharedMessageHolder._internal();
+class SharedMessageExtensions {
+  factory SharedMessageExtensions() => _instance;
+  static final SharedMessageExtensions _instance = SharedMessageExtensions._internal();
+  SharedMessageExtensions._internal();
 
   /// Content
   ContentHelper? get contentHelper =>
-      MessageHolder().contentHelper;
+      MessageExtensions().contentHelper;
 
   set contentHelper(ContentHelper? helper) =>
-      MessageHolder().contentHelper = helper;
+      MessageExtensions().contentHelper = helper;
 
   /// Envelope
   EnvelopeHelper? get envelopeHelper =>
-      MessageHolder().envelopeHelper;
+      MessageExtensions().envelopeHelper;
 
   set envelopeHelper(EnvelopeHelper? helper) =>
-      MessageHolder().envelopeHelper = helper;
+      MessageExtensions().envelopeHelper = helper;
 
   /// InstantMessage
   InstantMessageHelper? get instantHelper =>
-      MessageHolder().instantHelper;
+      MessageExtensions().instantHelper;
 
   set instantHelper(InstantMessageHelper? helper) =>
-      MessageHolder().instantHelper = helper;
+      MessageExtensions().instantHelper = helper;
 
   /// SecureMessage
   SecureMessageHelper? get secureHelper =>
-      MessageHolder().secureHelper;
+      MessageExtensions().secureHelper;
 
   set secureHelper(SecureMessageHelper? helper) =>
-      MessageHolder().secureHelper = helper;
+      MessageExtensions().secureHelper = helper;
 
   /// ReliableMessage
   ReliableMessageHelper? get reliableHelper =>
-      MessageHolder().reliableHelper;
+      MessageExtensions().reliableHelper;
 
   set reliableHelper(ReliableMessageHelper? helper) =>
-      MessageHolder().reliableHelper = helper;
+      MessageExtensions().reliableHelper = helper;
 
   /// General Helper
   GeneralMessageHelper? helper;

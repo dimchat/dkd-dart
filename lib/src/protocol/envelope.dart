@@ -77,22 +77,22 @@ abstract interface class Envelope implements Mapper {
   //
 
   static Envelope create({required ID sender, required ID receiver, DateTime? time}) {
-    var holder = MessageHolder();
-    return holder.envelopeHelper!.createEnvelope(sender: sender, receiver: receiver, time: time);
+    var ext = MessageExtensions();
+    return ext.envelopeHelper!.createEnvelope(sender: sender, receiver: receiver, time: time);
   }
 
   static Envelope? parse(Object? env) {
-    var holder = MessageHolder();
-    return holder.envelopeHelper!.parseEnvelope(env);
+    var ext = MessageExtensions();
+    return ext.envelopeHelper!.parseEnvelope(env);
   }
 
   static EnvelopeFactory? getFactory() {
-    var holder = MessageHolder();
-    return holder.envelopeHelper!.getEnvelopeFactory();
+    var ext = MessageExtensions();
+    return ext.envelopeHelper!.getEnvelopeFactory();
   }
   static void setFactory(EnvelopeFactory factory) {
-    var holder = MessageHolder();
-    holder.envelopeHelper!.setEnvelopeFactory(factory);
+    var ext = MessageExtensions();
+    ext.envelopeHelper!.setEnvelopeFactory(factory);
   }
 }
 

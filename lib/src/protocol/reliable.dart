@@ -61,17 +61,17 @@ abstract interface class ReliableMessage implements SecureMessage {
   //
 
   static ReliableMessage? parse(Object? msg) {
-    var holder = MessageHolder();
-    return holder.reliableHelper!.parseReliableMessage(msg);
+    var ext = MessageExtensions();
+    return ext.reliableHelper!.parseReliableMessage(msg);
   }
 
   static ReliableMessageFactory? getFactory() {
-    var holder = MessageHolder();
-    return holder.reliableHelper!.getReliableMessageFactory();
+    var ext = MessageExtensions();
+    return ext.reliableHelper!.getReliableMessageFactory();
   }
   static void setFactory(ReliableMessageFactory factory) {
-    var holder = MessageHolder();
-    holder.reliableHelper!.setReliableMessageFactory(factory);
+    var ext = MessageExtensions();
+    ext.reliableHelper!.setReliableMessageFactory(factory);
   }
 }
 

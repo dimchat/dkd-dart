@@ -26,12 +26,13 @@ Copyright &copy; 2023 Albert Moky
     - [Type](#content-type)
     - Serial Number
     - Time
+    - Group _(Optional)_
 - [Message](#message)
     - [Instant Message](#instant-message)
     - [Secure Message](#secure-message)
     - [Reliable Message](#reliable-message)
 
-## <span id="envelope">0. Envelope </span>
+## Envelope
 
 ### Message Envelope
 
@@ -44,7 +45,7 @@ Copyright &copy; 2023 Albert Moky
 }
 ```
 
-## <span id="content">1. Content</span>
+## Content
 
 ```javascript
 /* example */
@@ -56,7 +57,7 @@ Copyright &copy; 2023 Albert Moky
 }
 ```
 
-### <span id="content-type">Message Content Type</span>
+### Content Type
 
 ```dart
 class ContentType {
@@ -111,17 +112,17 @@ class ContentType {
 }
 ```
 
-## <span id="message">2. Message</span>
+## Message
 
 When the user want to send out a message, the client needs TWO steps before sending it:
 
-1. Encrypt the **Instant Message** to **Secure Message**;
-2. Sign the **Secure Message** to **Reliable Message**.
+1. Encrypt the ```Instant Message``` to ```Secure Message```;
+2. Sign the ```Secure Message``` to ```Reliable Message```.
 
 Accordingly, when the client received a message, it needs TWO steps to extract the content:
 
-1. Verify the **Reliable Message** to **Secure Message**;
-2. Decrypt the **Secure Message** to **Instant Message**.
+1. Verify the ```Reliable Message``` to ```Secure Message```;
+2. Decrypt the ```Secure Message``` to ```Instant Message```.
 
 ```javascript
     Message Transforming
@@ -144,7 +145,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
 
 ```
 
-### <span id="instant-message">Instant Message</span>
+### Instant Message
 
 ```javascript
 /* example */
@@ -165,7 +166,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
 
 content -> JsON string: ```{"sn":412968873,"text":"Hey guy!","type":1}```
 
-### <span id="secure-message">Secure Message</span>
+### Secure Message
 
 ```javascript
 /**
@@ -187,7 +188,7 @@ content -> JsON string: ```{"sn":412968873,"text":"Hey guy!","type":1}```
 }
 ```
 
-### <span id="reliable-message">Reliable Message</span>
+### Reliable Message
 
 ```javascript
 /**

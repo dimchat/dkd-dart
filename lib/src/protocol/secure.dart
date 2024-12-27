@@ -63,17 +63,17 @@ abstract interface class SecureMessage implements Message {
   //
 
   static SecureMessage? parse(Object? msg) {
-    var holder = MessageHolder();
-    return holder.secureHelper!.parseSecureMessage(msg);
+    var ext = MessageExtensions();
+    return ext.secureHelper!.parseSecureMessage(msg);
   }
 
   static SecureMessageFactory? getFactory() {
-    var holder = MessageHolder();
-    return holder.secureHelper!.getSecureMessageFactory();
+    var ext = MessageExtensions();
+    return ext.secureHelper!.getSecureMessageFactory();
   }
   static void setFactory(SecureMessageFactory factory) {
-    var holder = MessageHolder();
-    holder.secureHelper!.setSecureMessageFactory(factory);
+    var ext = MessageExtensions();
+    ext.secureHelper!.setSecureMessageFactory(factory);
   }
 }
 

@@ -55,27 +55,27 @@ abstract interface class InstantMessage implements Message {
   //
 
   static InstantMessage create(Envelope head, Content body) {
-    var holder = MessageHolder();
-    return holder.instantHelper!.createInstantMessage(head, body);
+    var ext = MessageExtensions();
+    return ext.instantHelper!.createInstantMessage(head, body);
   }
 
   static InstantMessage? parse(Object? msg) {
-    var holder = MessageHolder();
-    return holder.instantHelper!.parseInstantMessage(msg);
+    var ext = MessageExtensions();
+    return ext.instantHelper!.parseInstantMessage(msg);
   }
 
   static int generateSerialNumber(int? msgType, DateTime? now) {
-    var holder = MessageHolder();
-    return holder.instantHelper!.generateSerialNumber(msgType, now);
+    var ext = MessageExtensions();
+    return ext.instantHelper!.generateSerialNumber(msgType, now);
   }
 
   static InstantMessageFactory? getFactory() {
-    var holder = MessageHolder();
-    return holder.instantHelper!.getInstantMessageFactory();
+    var ext = MessageExtensions();
+    return ext.instantHelper!.getInstantMessageFactory();
   }
   static void setFactory(InstantMessageFactory factory) {
-    var holder = MessageHolder();
-    holder.instantHelper!.setInstantMessageFactory(factory);
+    var ext = MessageExtensions();
+    ext.instantHelper!.setInstantMessageFactory(factory);
   }
 }
 

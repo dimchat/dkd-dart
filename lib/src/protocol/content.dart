@@ -70,17 +70,17 @@ abstract interface class Content implements Mapper {
   //
 
   static Content? parse(Object? content) {
-    var holder = MessageHolder();
-    return holder.contentHelper!.parseContent(content);
+    var ext = MessageExtensions();
+    return ext.contentHelper!.parseContent(content);
   }
 
   static ContentFactory? getFactory(int msgType) {
-    var holder = MessageHolder();
-    return holder.contentHelper!.getContentFactory(msgType);
+    var ext = MessageExtensions();
+    return ext.contentHelper!.getContentFactory(msgType);
   }
   static void setFactory(int msgType, ContentFactory factory) {
-    var holder = MessageHolder();
-    holder.contentHelper!.setContentFactory(msgType, factory);
+    var ext = MessageExtensions();
+    ext.contentHelper!.setContentFactory(msgType, factory);
   }
 }
 

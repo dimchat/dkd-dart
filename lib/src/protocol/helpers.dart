@@ -93,10 +93,10 @@ abstract interface class ReliableMessageHelper {
 /// Message FactoryManager
 /// ~~~~~~~~~~~~~~~~~~~~~~
 // protected
-class MessageHolder {
-  factory MessageHolder() => _instance;
-  static final MessageHolder _instance = MessageHolder._internal();
-  MessageHolder._internal();
+class MessageExtensions {
+  factory MessageExtensions() => _instance;
+  static final MessageExtensions _instance = MessageExtensions._internal();
+  MessageExtensions._internal();
 
   ContentHelper? contentHelper;
   EnvelopeHelper? envelopeHelper;
