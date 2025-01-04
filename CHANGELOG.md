@@ -1,3 +1,7 @@
+## 1.2.2
+
+- Remove message delegates.
+
 ## 1.2.1
 
 - Shared Extensions.

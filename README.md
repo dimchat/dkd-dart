@@ -4,8 +4,9 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/dimchat/dkd-dart/pulls)
 [![Platform](https://img.shields.io/badge/Platform-Dart%203-brightgreen.svg)](https://github.com/dimchat/dkd-dart/wiki)
 [![Issues](https://img.shields.io/github/issues/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/issues)
-[![Version](https://img.shields.io/github/tag/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/tags)
 [![Repo Size](https://img.shields.io/github/repo-size/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/archive/refs/heads/main.zip)
+[![Tags](https://img.shields.io/github/tag/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/tags)
+[![Version](https://img.shields.io/pub/v/dkd)](https://pub.dev/packages/dkd)
 
 [![Watchers](https://img.shields.io/github/watchers/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/watchers)
 [![Forks](https://img.shields.io/github/forks/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/forks)
@@ -13,8 +14,6 @@
 [![Followers](https://img.shields.io/github/followers/dimchat)](https://github.com/orgs/dimchat/followers)
 
 This [document](https://github.com/dimchat/DIMP/blob/master/DaoKeDao-Message.md) introduces a common **Message Module** for decentralized instant messaging.
-
-Copyright &copy; 2023 Albert Moky
 
 ## Features
 
@@ -209,3 +208,8 @@ content -> JsON string: ```{"sn":412968873,"text":"Hey guy!","type":1}```
 ```
 
 (All data encode with **BASE64** algorithm as default)
+
+----
+
+Copyright &copy; 2023 Albert Moky
+[![Followers](https://img.shields.io/github/followers/moky)](https://github.com/moky?tab=followers)
