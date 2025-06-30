@@ -38,7 +38,7 @@ import 'helpers.dart';
 ///  This class is for creating message content
 ///
 ///  data format: {
-///      'type'    : 0x00,           // message type
+///      'type'    : i2s(0),         // message type
 ///      'sn'      : 0,              // serial number
 ///
 ///      'time'    : 123,            // message time
@@ -52,7 +52,7 @@ import 'helpers.dart';
 abstract interface class Content implements Mapper {
 
   /// message type
-  int get type;
+  String get type;
 
   /// serial number as message id
   int get sn;
@@ -66,7 +66,32 @@ abstract interface class Content implements Mapper {
   set group(ID? identifier);
 
   //
-  //  Factory method
+  //  Conveniences
+  //
+
+  static List<Content> convert(Iterable array) {
+    List<Content> contents = [];
+    Content? msg;
+    for (var item in array) {
+      msg = parse(item);
+      if (msg == null) {
+        continue;
+      }
+      contents.add(msg);
+    }
+    return contents;
+  }
+
+  static List<Map<String, dynamic>> revert(Iterable<Content> contents) {
+    List<Map<String, dynamic>> array = [];
+    for (Content msg in contents) {
+      array.add(msg.toMap());
+    }
+    return array;
+  }
+
+  //
+  //  Factory methods
   //
 
   static Content? parse(Object? content) {
@@ -74,11 +99,11 @@ abstract interface class Content implements Mapper {
     return ext.contentHelper!.parseContent(content);
   }
 
-  static ContentFactory? getFactory(int msgType) {
+  static ContentFactory? getFactory(String msgType) {
     var ext = MessageExtensions();
     return ext.contentHelper!.getContentFactory(msgType);
   }
-  static void setFactory(int msgType, ContentFactory factory) {
+  static void setFactory(String msgType, ContentFactory factory) {
     var ext = MessageExtensions();
     ext.contentHelper!.setContentFactory(msgType, factory);
   }

@@ -1,3 +1,7 @@
+## 2.0.0
+
+- String type for message content.
+
 ## 1.2.2
 
 - Remove message delegates.

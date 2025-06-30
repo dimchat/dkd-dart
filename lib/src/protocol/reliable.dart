@@ -57,6 +57,31 @@ abstract interface class ReliableMessage implements SecureMessage {
   Uint8List get signature;
 
   //
+  //  Conveniences
+  //
+
+  static List<ReliableMessage> convert(Iterable array) {
+    List<ReliableMessage> messages = [];
+    ReliableMessage? msg;
+    for (var item in array) {
+      msg = parse(item);
+      if (msg == null) {
+        continue;
+      }
+      messages.add(msg);
+    }
+    return messages;
+  }
+
+  static List<Map<String, dynamic>> revert(Iterable<ReliableMessage> messages) {
+    List<Map<String, dynamic>> array = [];
+    for (ReliableMessage msg in messages) {
+      array.add(msg.toMap());
+    }
+    return array;
+  }
+
+  //
   //  Factory methods
   //
 

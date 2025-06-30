@@ -69,8 +69,8 @@ abstract interface class Envelope implements Mapper {
   ///  the intermediate nodes(station) cannot recognize what kind of it.
   ///  we pick out the content type and set it in envelope
   ///  to let the station do its job.
-  int? get type;
-  set type(int? msgType);
+  String? get type;
+  set type(String? msgType);
 
   //
   //  Factory methods
@@ -161,5 +161,6 @@ abstract interface class Message implements Mapper {
   DateTime? get time;  // content.time or envelope.time
 
   ID? get group;       // content.group or envelope.group
-  int? get type;       // content.type or envelope.type
+  String? get type;    // content.type or envelope.type
+
 }

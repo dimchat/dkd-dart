@@ -3,7 +3,6 @@
 /// Universal Message Module
 library dkd;
 
-export 'src/protocol/types.dart';
 export 'src/protocol/content.dart';
 export 'src/protocol/envelope.dart';
 export 'src/protocol/instant.dart';

@@ -41,8 +41,8 @@ import 'secure.dart';
 
 abstract interface class ContentHelper {
 
-  void setContentFactory(int msgType, ContentFactory factory);
-  ContentFactory? getContentFactory(int msgType);
+  void setContentFactory(String msgType, ContentFactory factory);
+  ContentFactory? getContentFactory(String msgType);
 
   Content? parseContent(Object? content);
 
@@ -68,7 +68,7 @@ abstract interface class InstantMessageHelper {
 
   InstantMessage? parseInstantMessage(Object? msg);
 
-  int generateSerialNumber(int? msgType, DateTime? now);
+  int generateSerialNumber(String? msgType, DateTime? now);
 
 }
 

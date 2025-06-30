@@ -51,6 +51,31 @@ abstract interface class InstantMessage implements Message {
   // set content(Content body);
 
   //
+  //  Conveniences
+  //
+
+  static List<InstantMessage> convert(Iterable array) {
+    List<InstantMessage> messages = [];
+    InstantMessage? msg;
+    for (var item in array) {
+      msg = parse(item);
+      if (msg == null) {
+        continue;
+      }
+      messages.add(msg);
+    }
+    return messages;
+  }
+
+  static List<Map<String, dynamic>> revert(Iterable<InstantMessage> messages) {
+    List<Map<String, dynamic>> array = [];
+    for (InstantMessage msg in messages) {
+      array.add(msg.toMap());
+    }
+    return array;
+  }
+
+  //
   //  Factory methods
   //
 
@@ -64,7 +89,7 @@ abstract interface class InstantMessage implements Message {
     return ext.instantHelper!.parseInstantMessage(msg);
   }
 
-  static int generateSerialNumber(int? msgType, DateTime? now) {
+  static int generateSerialNumber(String? msgType, DateTime? now) {
     var ext = MessageExtensions();
     return ext.instantHelper!.generateSerialNumber(msgType, now);
   }
@@ -89,7 +114,7 @@ abstract interface class InstantMessageFactory {
   /// @param msgType - content type
   /// @param now     - message time
   /// @return SN (uint64, serial number as msg id)
-  int generateSerialNumber(int? msgType, DateTime? now);
+  int generateSerialNumber(String? msgType, DateTime? now);
 
   ///  Create instant message with envelope & content
   ///
