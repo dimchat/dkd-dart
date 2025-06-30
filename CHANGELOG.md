@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Default content type.
+
 ## 2.0.0
 
 - String type for message content.
