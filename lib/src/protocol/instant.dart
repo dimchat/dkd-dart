@@ -67,8 +67,8 @@ abstract interface class InstantMessage implements Message {
     return messages;
   }
 
-  static List<Map<String, dynamic>> revert(Iterable<InstantMessage> messages) {
-    List<Map<String, dynamic>> array = [];
+  static List<Map> revert(Iterable<InstantMessage> messages) {
+    List<Map> array = [];
     for (InstantMessage msg in messages) {
       array.add(msg.toMap());
     }

@@ -73,8 +73,8 @@ abstract interface class ReliableMessage implements SecureMessage {
     return messages;
   }
 
-  static List<Map<String, dynamic>> revert(Iterable<ReliableMessage> messages) {
-    List<Map<String, dynamic>> array = [];
+  static List<Map> revert(Iterable<ReliableMessage> messages) {
+    List<Map> array = [];
     for (ReliableMessage msg in messages) {
       array.add(msg.toMap());
     }

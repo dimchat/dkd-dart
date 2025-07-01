@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Simplify Map.
+
 ## 2.0.1
 
 - Default content type.

@@ -56,7 +56,7 @@ abstract interface class SecureMessage implements Message {
   Uint8List? get encryptedKey;
 
   // String => String
-  Map<String, dynamic>? get encryptedKeys;
+  Map? get encryptedKeys;
 
   //
   //  Factory methods

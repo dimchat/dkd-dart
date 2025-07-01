@@ -82,8 +82,8 @@ abstract interface class Content implements Mapper {
     return contents;
   }
 
-  static List<Map<String, dynamic>> revert(Iterable<Content> contents) {
-    List<Map<String, dynamic>> array = [];
+  static List<Map> revert(Iterable<Content> contents) {
+    List<Map> array = [];
     for (Content msg in contents) {
       array.add(msg.toMap());
     }
