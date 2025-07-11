@@ -42,7 +42,7 @@ import 'helpers.dart';
 ///      'sn'      : 0,              // serial number
 ///
 ///      'time'    : 123,            // message time
-///      'group'   : 'Group ID',     // for group message
+///      'group'   : '{GroupID}',    // for group message
 ///
 ///      //-- message info
 ///      'text'    : 'text',         // for text message

@@ -40,7 +40,7 @@ abstract interface class GeneralMessageHelper /*
   //  Message Type
   //
 
-  String? getContentType(Map content, String? defaultValue);
+  String? getContentType(Map content, [String? defaultValue]);
 
 }
 
