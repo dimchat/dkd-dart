@@ -89,7 +89,7 @@ abstract interface class InstantMessage implements Message {
     return ext.instantHelper!.parseInstantMessage(msg);
   }
 
-  static int generateSerialNumber(String? msgType, DateTime? now) {
+  static int generateSerialNumber([String? msgType, DateTime? now]) {
     var ext = MessageExtensions();
     return ext.instantHelper!.generateSerialNumber(msgType, now);
   }
