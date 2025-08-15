@@ -49,7 +49,7 @@ This [document](https://github.com/dimchat/DIMP/blob/master/DaoKeDao-Message.md)
 ```javascript
 /* example */
 {
-    "type"     : 0x01,      // message type
+    "type"     : '1',       // message type
     "sn"       : 412968873, // serial number (message ID in conversation)
     
     "text"     : "Hey guy!"
@@ -61,52 +61,50 @@ This [document](https://github.com/dimchat/DIMP/blob/master/DaoKeDao-Message.md)
 ```dart
 class ContentType {
 
-  static const ANY       = (0x00); // 0000 0000 (Undefined)
+  static const ANY       = '${0x00}'; // 0000 0000 (Undefined)
 
-  static const TEXT      = (0x01); // 0000 0001
+  static const TEXT      = '${0x01}'; // 0000 0001
 
-  static const FILE      = (0x10); // 0001 0000
-  static const IMAGE     = (0x12); // 0001 0010
-  static const AUDIO     = (0x14); // 0001 0100
-  static const VIDEO     = (0x16); // 0001 0110
+  static const FILE      = '${0x10}'; // 0001 0000
+  static const IMAGE     = '${0x12}'; // 0001 0010
+  static const AUDIO     = '${0x14}'; // 0001 0100
+  static const VIDEO     = '${0x16}'; // 0001 0110
 
   /// Web Page
-  static const PAGE      = (0x20); // 0010 0000
+  static const PAGE      = '${0x20}'; // 0010 0000
 
   /// Name Card
-  static const NAME_CARD = (0x33); // 0011 0011
+  static const NAME_CARD = '${0x33}'; // 0011 0011
 
   /// Quote a message before and reply it with text
-  static const QUOTE     = (0x37); // 0011 0111
+  static const QUOTE     = '${0x37}'; // 0011 0111
 
-  /// Money
-  static const MONEY         = (0x40); // 0100 0000
-  static const TRANSFER      = (0x41); // 0100 0001
-  static const LUCKY_MONEY   = (0x42); // 0100 0010
-  static const CLAIM_PAYMENT = (0x48); // 0100 1000 (Claim for Payment)
-  static const SPLIT_BILL    = (0x49); // 0100 1001 (Split the Bill)
+  static const MONEY         = '${0x40}'; // 0100 0000
+  static const TRANSFER      = '${0x41}'; // 0100 0001
+  static const LUCKY_MONEY   = '${0x42}'; // 0100 0010
+  static const CLAIM_PAYMENT = '${0x48}'; // 0100 1000 (Claim for Payment)
+  static const SPLIT_BILL    = '${0x49}'; // 0100 1001 (Split the Bill)
 
-  /// Command
-  static const COMMAND       = (0x88); // 1000 1000
-  static const HISTORY       = (0x89); // 1000 1001 (Entity History Command)
+  static const COMMAND       = '${0x88}'; // 1000 1000
+  static const HISTORY       = '${0x89}'; // 1000 1001 (Entity History Command)
 
   /// Application Customized
-  static const APPLICATION       = (0xA0); // 1010 0000 (Application 0nly, Reserved)
-  // static const APPLICATION_1  = (0xA1); // 1010 0001 (Reserved)
-  // ...                                   // 1010 ???? (Reserved)
-  // static const APPLICATION_15 = (0xAF); // 1010 1111 (Reserved)
+  static const APPLICATION       = '${0xA0}'; // 1010 0000 (Application 0nly, Reserved)
+  // static const APPLICATION_1  = '${0xA1}'; // 1010 0001 (Reserved)
+  //              ...                         // 1010 ???? (Reserved)
+  // static const APPLICATION_15 = '${0xAF}'; // 1010 1111 (Reserved)
 
-  // static const CUSTOMIZED_0   = (0xC0); // 1100 0000 (Reserved)
-  // static const CUSTOMIZED_1   = (0xC1); // 1100 0001 (Reserved)
-  // ...                                   // 1100 ???? (Reserved)
-  static const ARRAY             = (0xCA); // 1100 1010 (Content Array)
-  // ...                                   // 1100 ???? (Reserved)
-  static const CUSTOMIZED        = (0xCC); // 1100 1100 (Customized Content)
-  // ...                                   // 1100 ???? (Reserved)
-  static const COMBINE_FORWARD   = (0xCF); // 1100 1111 (Combine and Forward)
+  // static const CUSTOMIZED_0   = '${0xC0}'; // 1100 0000 (Reserved)
+  // static const CUSTOMIZED_1   = '${0xC1}'; // 1100 0001 (Reserved)
+  //           ......                         // 1100 ???? (Reserved)
+  static const ARRAY             = '${0xCA}'; // 1100 1010 (Content Array)
+  //           ...                            // 1100 ???? (Reserved)
+  static const CUSTOMIZED        = '${0xCC}'; // 1100 1100 (Customized Content)
+  //           ...                            // 1100 ???? (Reserved)
+  static const COMBINE_FORWARD   = '${0xCF}'; // 1100 1111 (Combine and Forward)
 
   /// Top-Secret message forward by proxy (MTA)
-  static const FORWARD           = (0xFF); // 1111 1111
+  static const FORWARD           = '${0xFF}'; // 1111 1111
 
 }
 ```
@@ -156,7 +154,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
     
     //-------- body (content) ---------
     "content"  : {
-        "type" : 0x01,      // message type
+        "type" : '1',       // message type
         "sn"   : 412968873, // serial number (ID)
         "text" : "Hey guy!"
     }
