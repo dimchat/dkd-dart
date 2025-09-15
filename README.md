@@ -1,6 +1,6 @@
 # Dao Ke Dao (道可道) -- Message Module (Dart)
 
-[![License](https://img.shields.io/github/license/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/dimchat/dkd-dart/pulls)
 [![Platform](https://img.shields.io/badge/Platform-Dart%203-brightgreen.svg)](https://github.com/dimchat/dkd-dart/wiki)
 [![Issues](https://img.shields.io/github/issues/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/issues)
@@ -13,7 +13,7 @@
 [![Stars](https://img.shields.io/github/stars/dimchat/dkd-dart)](https://github.com/dimchat/dkd-dart/stargazers)
 [![Followers](https://img.shields.io/github/followers/dimchat)](https://github.com/orgs/dimchat/followers)
 
-This [document](https://github.com/dimchat/DIMP/blob/master/DaoKeDao-Message.md) introduces a common **Message Module** for decentralized instant messaging.
+This [document](https://github.com/moky/DIMP/blob/master/DaoKeDao-Message.md) introduces a common **Message Module** for decentralized instant messaging.
 
 ## Features
 
@@ -209,5 +209,5 @@ content -> JsON string: ```{"sn":412968873,"text":"Hey guy!","type":1}```
 
 ----
 
-Copyright &copy; 2023 Albert Moky
+Copyright &copy; 2023-2025 Albert Moky
 [![Followers](https://img.shields.io/github/followers/moky)](https://github.com/moky?tab=followers)
