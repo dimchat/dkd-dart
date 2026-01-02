@@ -40,9 +40,9 @@ import 'helpers.dart';
 ///  which contains 'sender', 'receiver' and 'time'
 ///
 ///  data format: {
-///      sender   : "moki@xxx",
-///      receiver : "hulk@yyy",
-///      time     : 123
+///      "sender"   : "moki@xxx",
+///      "receiver" : "hulk@yyy",
+///      "time"     : 123
 ///  }
 abstract interface class Envelope implements Mapper {
 

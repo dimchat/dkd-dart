@@ -49,7 +49,7 @@ This [document](https://github.com/moky/DIMP/blob/master/DaoKeDao-Message.md) in
 ```javascript
 /* example */
 {
-    "type"     : '1',       // message type
+    "type"     : "1",       // message type
     "sn"       : 412968873, // serial number (message ID in conversation)
     
     "text"     : "Hey guy!"
@@ -121,7 +121,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
 1. Verify the ```Reliable Message``` to ```Secure Message```;
 2. Decrypt the ```Secure Message``` to ```Instant Message```.
 
-```javascript
+```
     Message Transforming
     ~~~~~~~~~~~~~~~~~~~~
 
@@ -139,7 +139,6 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
         data      = password.encrypt(content)
         key       = receiver.public_key.encrypt(password)
         signature = sender.private_key.sign(data)
-
 ```
 
 ### Instant Message
@@ -154,7 +153,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
     
     //-------- body (content) ---------
     "content"  : {
-        "type" : '1',       // message type
+        "type" : "1",       // message type
         "sn"   : 412968873, // serial number (ID)
         "text" : "Hey guy!"
     }
@@ -209,5 +208,5 @@ content -> JsON string: ```{"sn":412968873,"text":"Hey guy!","type":1}```
 
 ----
 
-Copyright &copy; 2023-2025 Albert Moky
+Copyright &copy; 2023-2026 Albert Moky
 [![Followers](https://img.shields.io/github/followers/moky)](https://github.com/moky?tab=followers)

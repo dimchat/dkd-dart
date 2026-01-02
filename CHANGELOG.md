@@ -1,3 +1,7 @@
+## 2.2.2
+
+- Simplify message key.
+
 ## 2.2.1
 
 - Mapper forEach.

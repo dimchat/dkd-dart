@@ -37,11 +37,12 @@ import 'helpers.dart';
 ///
 ///  data format: {
 ///      //-- envelope
-///      sender   : "moki@xxx",
-///      receiver : "hulk@yyy",
-///      time     : 123,
+///      "sender"   : "moki@xxx",
+///      "receiver" : "hulk@yyy",
+///      "time"     : 123,
+///
 ///      //-- content
-///      content  : {...}
+///      "content"  : {...}
 ///  }
 abstract interface class InstantMessage implements Message {
 

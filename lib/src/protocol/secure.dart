@@ -39,21 +39,20 @@ import 'helpers.dart';
 ///
 ///  data format: {
 ///      //-- envelope
-///      sender   : "moki@xxx",
-///      receiver : "hulk@yyy",
-///      time     : 123,
+///      "sender"   : "moki@xxx",
+///      "receiver" : "hulk@yyy",
+///      "time"     : 123,
+///
 ///      //-- content data and key/keys
-///      data     : "...",  // base64_encode( symmetric_encrypt(content))
-///      key      : "...",  // base64_encode(asymmetric_encrypt(password))
-///      keys     : {
-///          "ID1": "key1", // base64_encode(asymmetric_encrypt(password))
+///      "data"     : "...",  // base64_encode( symmetric_encrypt(content))
+///      "keys"     : {
+///          "{ID}"   : "...",  // base64_encode(asymmetric_encrypt(pwd))
+///          "digest" : "..."   // hash(pwd.data)
 ///      }
 ///  }
 abstract interface class SecureMessage implements Message {
 
   Uint8List get data;
-
-  Uint8List? get encryptedKey;
 
   // String => String
   Map? get encryptedKeys;
