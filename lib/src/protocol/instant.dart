@@ -32,21 +32,35 @@ import 'content.dart';
 import 'envelope.dart';
 import 'helpers.dart';
 
-///  Instant Message
-///  ~~~~~~~~~~~~~~~
+
+/// Interface for plaintext instant messages (unencrypted, first stage).
 ///
-///  data format: {
-///      //-- envelope
-///      "sender"   : "moki@xxx",
-///      "receiver" : "hulk@yyy",
-///      "time"     : 123,
+/// Represents the original, unencrypted message with plaintext content. This is
+/// the starting point of the message transformation workflow before encryption
+/// and signing.
 ///
-///      //-- content
-///      "content"  : {...}
-///  }
+/// Serialized format (Map/JSON):
+/// ```json
+/// {
+///   // Envelope metadata
+///   "sender": "moki@xxx",    // Sender's unique ID
+///   "receiver": "hulk@yyy",  // Receiver's unique ID
+///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///
+///   // Plaintext content (complete Content object)
+///   "content": {             // Unencrypted message body
+///     "type": "0",           // Content type
+///     "sn": 12345,           // Serial number (message ID)
+///     "text": "Hello World"  // Message-specific fields
+///   }
+/// }
+/// ```
 abstract interface class InstantMessage implements Message {
 
-  /// message content
+  /// Plaintext message content (unencrypted body).
+  ///
+  /// This contains the actual message payload (text, commands, etc.) in its original
+  /// unencrypted form. Cannot be null (core payload of the instant message).
   Content get content;
   // // only for rebuild content
   // set content(Content body);
@@ -106,27 +120,42 @@ abstract interface class InstantMessage implements Message {
 }
 
 
-///  Message Factory
-///  ~~~~~~~~~~~~~~~
+/// Factory interface for creating and parsing [InstantMessage] instances.
+///
+/// Provides methods to generate unique serial numbers, create new instant messages
+/// from envelope/content pairs, and parse serialized instant messages.
 abstract interface class InstantMessageFactory {
 
-  ///  Generate SN for message content
+  /// Generates a unique serial number (SN) for message content.
   ///
-  /// @param msgType - content type
-  /// @param now     - message time
-  /// @return SN (uint64, serial number as msg id)
+  /// The SN serves as a unique message ID (uint64) to track and deduplicate messages.
+  ///
+  /// [msgType]: Type of the message content (used for algorithm-specific generation)
+  ///
+  /// [now]: Timestamp to incorporate into the SN (or current time if null)
+  ///
+  /// Returns: 64-bit unsigned integer (uint64) as unique serial number
   int generateSerialNumber(String? msgType, DateTime? now);
 
-  ///  Create instant message with envelope & content
+  /// Creates a new [InstantMessage] from envelope and plaintext content.
   ///
-  /// @param head - message envelope
-  /// @param body - message content
-  /// @return InstantMessage
+  /// Combines routing metadata (envelope) with unencrypted content to form a complete
+  /// instant message (plaintext stage).
+  ///
+  /// [head]: Message envelope (routing metadata, cannot be null)
+  ///
+  /// [body]: Plaintext content (message payload, cannot be null)
+  ///
+  /// Returns: New [InstantMessage] instance
   InstantMessage createInstantMessage(Envelope head, Content body);
 
-  ///  Parse map object to message
+  /// Parses a serialized Map into an [InstantMessage] instance.
   ///
-  /// @param msg - message info
-  /// @return InstantMessage
+  /// Validates the structure and converts raw values (e.g., timestamp → DateTime,
+  /// content map → Content object) to proper types.
+  ///
+  /// [msg]: Serialized instant message data (matches format in [InstantMessage])
+  ///
+  /// Returns: [InstantMessage] instance if parsing succeeds, null otherwise
   InstantMessage? parseInstantMessage(Map msg);
 }

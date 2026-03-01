@@ -1,3 +1,7 @@
+## 2.3.0
+
+- TransportableData.
+
 ## 2.2.2
 
 - Simplify message key.

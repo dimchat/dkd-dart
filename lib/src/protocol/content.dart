@@ -33,35 +33,54 @@ import 'package:mkm/type.dart';
 
 import 'helpers.dart';
 
-///  Message Content
-///  ~~~~~~~~~~~~~~~
-///  This class is for creating message content
+/// Interface for message content (body) that contains the actual message data.
 ///
-///  data format: {
-///      "type"    : i2s(0),         // message type
-///      "sn"      : 0,              // serial number
+/// Represents the core payload of a message, including type identifier, metadata,
+/// and message-specific data (text, commands, etc.). Implements [Mapper] for
+/// serialization to/from structured formats (Map/JSON).
 ///
-///      "time"    : 123,            // message time
-///      "group"   : "{GroupID}",    // for group message
+/// Serialized format (Map/JSON):
+/// ```json
+/// {
+///   "type": "0",             // Message type (e.g., i2s(0) = "0" = "text")
+///   "sn": 0,                 // Unique serial number (serves as message ID)
 ///
-///      //-- message info
-///      "text"    : "text",         // for text message
-///      "command" : "Command Name"  // for system command
-///      //...
-///  }
+///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   "group": "group@zzz",    // Optional group ID (marks this as a group message)
+///
+///   //-- message info
+///   "text": "Hello World!",  // Text content (for text messages)
+///   "command": "handshake"   // Command name (for system command messages)
+///   //...
+/// }
+/// ```
 abstract interface class Content implements Mapper {
 
-  /// message type
+  /// Message type identifier.
+  ///
+  /// This type categorizes the content payload (e.g., text, image, command) and
+  /// is used to determine how to parse the message-specific fields (text, command, etc.).
+  /// Generated via `i2s()` (integer to string) function (e.g., 0 → "0").
   String get type;
 
-  /// serial number as message id
+  /// Serial number (unique message identifier).
+  ///
+  /// This integer serves as a unique ID for the message, used for deduplication,
+  /// tracking, and acknowledgment of message delivery.
   int get sn;
 
-  /// message time
+  /// Timestamp when the content was created.
+  ///
+  /// Represented as a [DateTime] object (parsed from Unix timestamp in serialized format).
+  /// Returns: Content creation timestamp, or null if not specified.
   DateTime? get time;
 
-  /// Group ID/string for group message
-  ///    if field 'group' exists, it means this is a group message
+  /// Group identifier for group messages.
+  ///
+  /// **Key Indicator**: The presence of this field (non-null value) signifies that
+  /// this is a group message (as opposed to a direct message between two entities).
+  ///
+  /// Returns: Group ID for group messages, null for direct messages.
   ID? get group;
   set group(ID? identifier);
 
@@ -109,13 +128,18 @@ abstract interface class Content implements Mapper {
   }
 }
 
-///  Content Factory
-///  ~~~~~~~~~~~~~~~
+/// Factory interface for parsing [Content] instances from serialized data.
+///
+/// Provides a method to reconstruct message content from its serialized Map/JSON
+/// representation, with proper type validation and conversion.
 abstract interface class ContentFactory {
 
-  ///  Parse map object to content
+  /// Parses a serialized Map into a [Content] instance.
   ///
-  /// @param content - content info
-  /// @return Content
+  /// Validates the structure (required fields: type, sn) and converts raw values
+  /// (e.g., Unix timestamp → DateTime, group string → ID) to proper types.
+  ///
+  /// [content]: Serialized content data in the Map format defined in [Content]
+  /// Returns: [Content] instance if parsing/validation succeeds, null otherwise
   Content? parseContent(Map content);
 }

@@ -34,41 +34,57 @@ import 'package:mkm/type.dart';
 import 'helpers.dart';
 
 
-///  Envelope for message
-///  ~~~~~~~~~~~~~~~~~~~~
-///  This class is used to create a message envelope
-///  which contains 'sender', 'receiver' and 'time'
+/// Interface for message envelopes (headers) that contain routing/metadata for messages.
 ///
-///  data format: {
-///      "sender"   : "moki@xxx",
-///      "receiver" : "hulk@yyy",
-///      "time"     : 123
-///  }
+/// Envelopes wrap core message content with essential delivery information, including
+/// sender/receiver identifiers, timestamp, and metadata for message routing.
+/// Implements [Mapper] for serialization to/from structured formats (Map/JSON).
+///
+/// Serialized format (Map/JSON):
+/// ```json
+/// {
+///   "sender": "moki@xxx",    // Sender's unique ID
+///   "receiver": "hulk@yyy",  // Receiver's unique ID
+///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   "group": "group@zzz",    // Optional group ID (marks this as a group message)
+///   "type": "text"           // Optional message type
+/// }
+/// ```
 abstract interface class Envelope implements Mapper {
 
-  /// message from
+  /// Unique identifier of the message sender.
+  ///
+  /// This ID identifies the origin of the message (user) and cannot be null.
   ID get sender;
 
-  /// message to
+  /// Unique identifier of the message receiver.
+  ///
+  /// This ID identifies the target of the message (user/group) and cannot be null.
   ID get receiver;
 
-  /// message time
+  /// Timestamp when the message was created/sent.
+  ///
+  /// Represented as a [DateTime] object (parsed from Unix timestamp in serialized format).
+  /// Returns: Message timestamp, or null if not specified.
   DateTime? get time;
 
-  ///  Group ID
-  ///  ~~~~~~~~
-  ///  when a group message was split/trimmed to a single message
-  ///  the 'receiver' will be changed to a member ID, and
-  ///  the group ID will be saved as 'group'.
+  /// Optional group identifier for group messages.
+  ///
+  /// **Special Behavior**: When a group message is split into individual messages for
+  /// group members, the `receiver` field is updated to the member's ID, and the original
+  /// group ID is stored in this `group` field to preserve context.
+  ///
+  /// Returns: Original group ID for split group messages, null for direct messages.
   ID? get group;
   set group(ID? identifier);
 
-  ///  Message Type
-  ///  ~~~~~~~~~~~~
-  ///  because the message content will be encrypted, so
-  ///  the intermediate nodes(station) cannot recognize what kind of it.
-  ///  we pick out the content type and set it in envelope
-  ///  to let the station do its job.
+  /// Message content type identifier (for routing encrypted content).
+  ///
+  /// **Purpose**: Since message content may be encrypted, intermediate nodes (e.g., stations)
+  /// cannot parse the content to determine its type. This field exposes the content type
+  /// in plaintext to enable proper routing/processing by network nodes.
+  ///
+  /// Examples: "text", "file", "command", ...
   String? get type;
   set type(String? msgType);
 
@@ -96,22 +112,31 @@ abstract interface class Envelope implements Mapper {
   }
 }
 
-///  Envelope Factory
-///  ~~~~~~~~~~~~~~~~
+/// Factory interface for creating and parsing [Envelope] instances.
+///
+/// Provides methods to construct new envelopes from raw components and reconstruct
+/// envelopes from their serialized Map/JSON representation.
 abstract interface class EnvelopeFactory {
 
-  ///  Create envelope
+  /// Creates a new [Envelope] instance with required sender/receiver and optional timestamp.
   ///
-  /// @param sender   - from where
-  /// @param receiver - to where
-  /// @param time     - when
-  /// @return Envelope
+  /// [sender]: Required sender ID (cannot be null)
+  ///
+  /// [receiver]: Required receiver ID (cannot be null)
+  ///
+  /// [time]: Optional message timestamp (defaults to current time if null)
+  ///
+  /// Returns: New [Envelope] instance with the specified parameters
   Envelope createEnvelope({required ID sender, required ID receiver, DateTime? time});
 
-  ///  Parse map object to envelope
+  /// Parses a serialized Map into an [Envelope] instance.
   ///
-  /// @param env - envelope info
-  /// @return Envelope
+  /// Validates the structure and converts raw values (e.g., Unix timestamp → DateTime)
+  /// to the proper types defined in the [Envelope] interface.
+  ///
+  /// [env]: Serialized envelope data in the Map format defined in [Envelope]
+  ///
+  /// Returns: [Envelope] instance if parsing/validation succeeds, null otherwise
   Envelope? parseEnvelope(Map env);
 }
 
@@ -136,24 +161,62 @@ abstract interface class EnvelopeFactory {
  *         signature = sender.private_key.sign(data)
  */
 
-
-///  Message with Envelope
-///  ~~~~~~~~~~~~~~~~~~~~~
-///  Base classes for messages
-///  This class is used to create a message
-///  with the envelope fields, such as 'sender', 'receiver', and 'time'
+/// Message transformation workflow and cryptographic operations.
 ///
-///  data format: {
-///      //-- envelope
-///      sender   : "moki@xxx",
-///      receiver : "hulk@yyy",
-///      time     : 123,
-///      //-- body
-///      ...
-///  }
+/// This framework defines three stages of message processing with increasing
+/// security guarantees, enabling secure communication between entities:
+///
+/// ```
+/// Instant Message → Secure Message → Reliable Message
+/// (Plaintext)      (Encrypted)      (Encrypted + Signed)
+/// ```
+///
+/// ### Data Structure Evolution
+/// | Field          | Instant Message | Secure Message | Reliable Message |
+/// |----------------|-----------------|----------------|------------------|
+/// | sender         | ✅              | ✅             | ✅               |
+/// | receiver       | ✅              | ✅             | ✅               |
+/// | time           | ✅              | ✅             | ✅               |
+/// | content        | ✅ (plaintext)  | ❌             | ❌               |
+/// | data           | ❌              | ✅ (encrypted) | ✅ (encrypted)   |
+/// | key/keys       | ❌              | ✅ (encrypted) | ✅ (encrypted)   |
+/// | signature      | ❌              | ❌             | ✅ (signed)      |
+///
+/// ### Core Cryptographic Algorithms
+/// 1. Content encryption: `data = symmetric_key.encrypt(content)`
+/// 2. Key encryption: `key = receiver.public_key.encrypt(symmetric_key)`
+/// 3. Signature generation: `signature = sender.private_key.sign(data)`
+///
+/// ### Reverse Transformation
+/// Reliable Message → Secure Message → Instant Message (with decryption/verification)
+/// - Verify signature → Extract secure message
+/// - Decrypt keys to get symmetric key → Decrypt data to get content
+/// -----------------------------------------------------------------------------
+///
+
+/// Base interface for all message types (Instant/Secure/Reliable).
+///
+/// All messages share a common envelope (routing metadata) and implement [Mapper]
+/// for serialization to/from structured formats (Map/JSON). This interface provides
+/// unified access to core message metadata (sender, receiver, time, etc.) across
+/// all message stages.
+///
+/// Base serialized format (Map/JSON):
+/// ```json
+/// {
+///   // Envelope (routing metadata)
+///   "sender": "moki@xxx",    // Sender's unique ID
+///   "receiver": "hulk@yyy",  // Receiver's unique ID
+///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   // Message body (varies by message type)
+///   ...
+/// }
+/// ```
 abstract interface class Message implements Mapper {
 
-  /// message envelope
+  /// Complete message envelope containing routing metadata.
+  ///
+  /// Serves as the single source of truth for sender, receiver, and base timestamp.
   Envelope get envelope;
 
   ID get sender;       // envelope.sender
