@@ -28,7 +28,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-import 'dart:typed_data';
+import 'package:mkm/format.dart';
 
 import 'envelope.dart';
 import 'helpers.dart';
@@ -52,7 +52,7 @@ import 'helpers.dart';
 ///  }
 abstract interface class SecureMessage implements Message {
 
-  Uint8List get data;
+  TransportableData get data;
 
   // String => String
   Map? get encryptedKeys;

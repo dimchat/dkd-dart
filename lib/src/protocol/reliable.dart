@@ -28,7 +28,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-import 'dart:typed_data';
+import 'package:mkm/format.dart';
 
 import 'helpers.dart';
 import 'secure.dart';
@@ -55,7 +55,7 @@ import 'secure.dart';
 ///  }
 abstract interface class ReliableMessage implements SecureMessage {
 
-  Uint8List get signature;
+  TransportableData get signature;
 
   //
   //  Conveniences
