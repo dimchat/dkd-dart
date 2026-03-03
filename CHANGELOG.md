@@ -1,3 +1,7 @@
+## 2.3.1
+
+- Single TED factory.
+
 ## 2.3.0
 
 - TransportableData.
