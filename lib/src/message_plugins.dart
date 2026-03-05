@@ -46,45 +46,46 @@ abstract interface class GeneralMessageHelper /*
 
 /// Message FactoryManager
 /// ~~~~~~~~~~~~~~~~~~~~~~
-class SharedMessageExtensions {
-  factory SharedMessageExtensions() => _instance;
-  static final SharedMessageExtensions _instance = SharedMessageExtensions._internal();
-  SharedMessageExtensions._internal();
+
+// ignore: non_constant_identifier_names
+final SharedMessageExtensions = _SharedMessageExtension();
+
+class _SharedMessageExtension {
 
   /// Content
   ContentHelper? get contentHelper =>
-      MessageExtensions().contentHelper;
+      MessageExtensions.contentHelper;
 
   set contentHelper(ContentHelper? helper) =>
-      MessageExtensions().contentHelper = helper;
+      MessageExtensions.contentHelper = helper;
 
   /// Envelope
   EnvelopeHelper? get envelopeHelper =>
-      MessageExtensions().envelopeHelper;
+      MessageExtensions.envelopeHelper;
 
   set envelopeHelper(EnvelopeHelper? helper) =>
-      MessageExtensions().envelopeHelper = helper;
+      MessageExtensions.envelopeHelper = helper;
 
   /// InstantMessage
   InstantMessageHelper? get instantHelper =>
-      MessageExtensions().instantHelper;
+      MessageExtensions.instantHelper;
 
   set instantHelper(InstantMessageHelper? helper) =>
-      MessageExtensions().instantHelper = helper;
+      MessageExtensions.instantHelper = helper;
 
   /// SecureMessage
   SecureMessageHelper? get secureHelper =>
-      MessageExtensions().secureHelper;
+      MessageExtensions.secureHelper;
 
   set secureHelper(SecureMessageHelper? helper) =>
-      MessageExtensions().secureHelper = helper;
+      MessageExtensions.secureHelper = helper;
 
   /// ReliableMessage
   ReliableMessageHelper? get reliableHelper =>
-      MessageExtensions().reliableHelper;
+      MessageExtensions.reliableHelper;
 
   set reliableHelper(ReliableMessageHelper? helper) =>
-      MessageExtensions().reliableHelper = helper;
+      MessageExtensions.reliableHelper = helper;
 
   /// General Helper
   GeneralMessageHelper? helper;
