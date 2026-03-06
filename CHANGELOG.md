@@ -1,3 +1,7 @@
+## 2.3.3
+
+- Message extension.
+
 ## 2.3.2
 
 - Singleton.

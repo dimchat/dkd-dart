@@ -30,8 +30,14 @@
  */
 import 'protocol/helpers.dart';
 
-/// Message GeneralFactory
-/// ~~~~~~~~~~~~~~~~~~~~~~
+// -----------------------------------------------------------------------------
+//  General Message Helper
+// -----------------------------------------------------------------------------
+
+/// General message helper interface for common message system utilities.
+///
+/// Combines utility methods for message component parsing (e.g., content type extraction)
+/// and acts as a unified interface for core message helpers.
 abstract interface class GeneralMessageHelper /*
     implements ContentHelper, EnvelopeHelper,
         InstantMessageHelper, SecureMessageHelper, ReliableMessageHelper */{
@@ -40,54 +46,28 @@ abstract interface class GeneralMessageHelper /*
   //  Message Type
   //
 
+  /// Extracts the content type from a raw content map.
+  ///
+  /// Retrieves the message type identifier (e.g., "01" for text, "88" for command)
+  /// from a raw content map with a fallback default value if the type field is missing.
+  ///
+  /// @param content - Raw content map containing type metadata
+  ///
+  /// @param defaultValue - Fallback value if type is not found
+  ///
+  /// @return Extracted content type (or defaultValue if not present)
   String? getContentType(Map content, [String? defaultValue]);
 
 }
 
-/// Message FactoryManager
-/// ~~~~~~~~~~~~~~~~~~~~~~
+/// General Extensions
+/// ~~~~~~~~~~~~~~~~~~
 
-// ignore: non_constant_identifier_names
-final SharedMessageExtensions = _SharedMessageExtension();
+GeneralMessageHelper? _msgHelper;
 
-class _SharedMessageExtension {
+extension GeneralMessageExtension on MessageExtensions {
 
-  /// Content
-  ContentHelper? get contentHelper =>
-      MessageExtensions.contentHelper;
-
-  set contentHelper(ContentHelper? helper) =>
-      MessageExtensions.contentHelper = helper;
-
-  /// Envelope
-  EnvelopeHelper? get envelopeHelper =>
-      MessageExtensions.envelopeHelper;
-
-  set envelopeHelper(EnvelopeHelper? helper) =>
-      MessageExtensions.envelopeHelper = helper;
-
-  /// InstantMessage
-  InstantMessageHelper? get instantHelper =>
-      MessageExtensions.instantHelper;
-
-  set instantHelper(InstantMessageHelper? helper) =>
-      MessageExtensions.instantHelper = helper;
-
-  /// SecureMessage
-  SecureMessageHelper? get secureHelper =>
-      MessageExtensions.secureHelper;
-
-  set secureHelper(SecureMessageHelper? helper) =>
-      MessageExtensions.secureHelper = helper;
-
-  /// ReliableMessage
-  ReliableMessageHelper? get reliableHelper =>
-      MessageExtensions.reliableHelper;
-
-  set reliableHelper(ReliableMessageHelper? helper) =>
-      MessageExtensions.reliableHelper = helper;
-
-  /// General Helper
-  GeneralMessageHelper? helper;
+  GeneralMessageHelper? get helper => _msgHelper;
+  set helper(GeneralMessageHelper? ext) => _msgHelper = ext;
 
 }

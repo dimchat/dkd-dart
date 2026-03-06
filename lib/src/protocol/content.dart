@@ -114,16 +114,16 @@ abstract interface class Content implements Mapper {
   //
 
   static Content? parse(Object? content) {
-    var helper = MessageExtensions.contentHelper;
+    var helper = sharedMessageExtensions.contentHelper;
     return helper!.parseContent(content);
   }
 
   static ContentFactory? getFactory(String msgType) {
-    var helper = MessageExtensions.contentHelper;
+    var helper = sharedMessageExtensions.contentHelper;
     return helper!.getContentFactory(msgType);
   }
   static void setFactory(String msgType, ContentFactory factory) {
-    var helper = MessageExtensions.contentHelper;
+    var helper = sharedMessageExtensions.contentHelper;
     helper!.setContentFactory(msgType, factory);
   }
 }
