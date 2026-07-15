@@ -43,15 +43,15 @@ import 'helpers.dart';
 /// ```json
 /// {
 ///   // Envelope metadata
-///   "sender": "moki@xxx",    // Sender's unique ID
-///   "receiver": "hulk@yyy",  // Receiver's unique ID
-///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   "sender"   : "moki@xxx",  // Sender's unique ID
+///   "receiver" : "hulk@yyy",  // Receiver's unique ID
+///   "time"     : 123.45,      // Message timestamp (Unix timestamp in seconds)
 ///
 ///   // Plaintext content (complete Content object)
-///   "content": {             // Unencrypted message body
-///     "type": "0",           // Content type
-///     "sn": 12345,           // Serial number (message ID)
-///     "text": "Hello World"  // Message-specific fields
+///   "content"  : {            // Unencrypted message body
+///     "type" : "1",           // Content type
+///     "sn"   : 12345,         // Serial number (message ID)
+///     "text" : "Hello World"  // Message-specific fields
 ///   }
 /// }
 /// ```

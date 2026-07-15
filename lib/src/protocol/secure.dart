@@ -44,15 +44,15 @@ import 'helpers.dart';
 /// ```json
 /// {
 ///   // Envelope metadata (unchanged from InstantMessage)
-///   "sender": "moki@xxx",      // Sender's unique ID
-///   "receiver": "hulk@yyy",    // Receiver's unique ID
-///   "time": 123,               // Message timestamp (Unix timestamp in seconds)
+///   "sender"    : "moki@xxx",  // Sender's unique ID
+///   "receiver"  : "hulk@yyy",  // Receiver's unique ID
+///   "time"      : 123.45,      // Message timestamp (Unix timestamp in seconds)
 ///
-///   // Encrypted content and keys
-///   "data": "...",             // base64_encode( symmetric_encrypt(content))
-///   "keys": {
-///     "{RecipientID}": "...",  // base64_encode(asymmetric_encrypt(pwd))
-///     "digest": "..."          // hash(pwd.data)
+///   // Encrypted content data and keys
+///   "data"      : "...",       // base64_encode( symmetric_encrypt(content))
+///   "keys"      : {
+///     "{ReceiverID}" : "...",  // base64_encode(asymmetric_encrypt(pwd))
+///     "digest"       : "..."   // hash(pwd.data)
 ///   }
 /// }
 /// ```

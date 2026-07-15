@@ -43,11 +43,12 @@ import 'helpers.dart';
 /// Serialized format (Map/JSON):
 /// ```json
 /// {
-///   "sender": "moki@xxx",    // Sender's unique ID
-///   "receiver": "hulk@yyy",  // Receiver's unique ID
-///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
-///   "group": "group@zzz",    // Optional group ID (marks this as a group message)
-///   "type": "text"           // Optional message type
+///   "sender"   : "moki@xxx",   // Sender's unique ID
+///   "receiver" : "hulk@yyy",   // Receiver's unique ID
+///   "time"     : 123.45,       // Message timestamp (Unix timestamp in seconds)
+///
+///   "group"    : "group@zzz",  // Optional group ID (marks this as a group message)
+///   "type"     : "text"        // Optional message type
 /// }
 /// ```
 abstract interface class Envelope implements Mapper {
@@ -152,7 +153,7 @@ abstract interface class EnvelopeFactory {
  *     |  time       |     |  time      |     |  time        |
  *     |             |     |            |     |              |
  *     |  content    |     |  data      |     |  data        |
- *     +-------------+     |  key/keys  |     |  key/keys    |
+ *     +-------------+     |  keys      |     |  keys        |
  *                         +------------+     |  signature   |
  *                                            +--------------+
  *     Algorithm:
@@ -179,7 +180,7 @@ abstract interface class EnvelopeFactory {
 /// | time           | ✅              | ✅             | ✅               |
 /// | content        | ✅ (plaintext)  | ❌             | ❌               |
 /// | data           | ❌              | ✅ (encrypted) | ✅ (encrypted)   |
-/// | key/keys       | ❌              | ✅ (encrypted) | ✅ (encrypted)   |
+/// | keys           | ❌              | ✅ (encrypted) | ✅ (encrypted)   |
 /// | signature      | ❌              | ❌             | ✅ (signed)      |
 ///
 /// ### Core Cryptographic Algorithms
@@ -205,9 +206,9 @@ abstract interface class EnvelopeFactory {
 /// ```json
 /// {
 ///   // Envelope (routing metadata)
-///   "sender": "moki@xxx",    // Sender's unique ID
-///   "receiver": "hulk@yyy",  // Receiver's unique ID
-///   "time": 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   "sender"   : "moki@xxx",  // Sender's unique ID
+///   "receiver" : "hulk@yyy",  // Receiver's unique ID
+///   "time"     : 123.45,      // Message timestamp (Unix timestamp in seconds)
 ///   // Message body (varies by message type)
 ///   ...
 /// }

@@ -132,7 +132,7 @@ Accordingly, when the client received a message, it needs TWO steps to extract t
     |  time       |        |  time      |        |  time        |
     |             |        |            |        |              |
     |  content    |        |  data      |        |  data        |
-    +-------------+        |  key/keys  |        |  key/keys    |
+    +-------------+        |  keys      |        |  keys        |
                            +------------+        |  signature   |
                                                  +--------------+
     Algorithm:

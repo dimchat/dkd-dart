@@ -5,4 +5,4 @@ library dkd;
 
 export 'src/protocol/helpers.dart';
 
-export 'src/message_plugins.dart';
+export 'src/message_ext.dart';
