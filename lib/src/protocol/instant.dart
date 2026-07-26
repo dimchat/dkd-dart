@@ -28,6 +28,8 @@
  * SOFTWARE.
  * ==============================================================================
  */
+import 'package:mkm/type.dart';
+
 import 'content.dart';
 import 'envelope.dart';
 import 'helpers.dart';
@@ -82,8 +84,8 @@ abstract interface class InstantMessage implements Message {
     return messages;
   }
 
-  static List<Map> revert(Iterable<InstantMessage> messages) {
-    List<Map> array = [];
+  static List<MutableMapping> revert(Iterable<InstantMessage> messages) {
+    List<MutableMapping> array = [];
     for (InstantMessage msg in messages) {
       array.add(msg.toMap());
     }
@@ -157,5 +159,5 @@ abstract interface class InstantMessageFactory {
   /// [msg]: Serialized instant message data (matches format in [InstantMessage])
   ///
   /// Returns: [InstantMessage] instance if parsing succeeds, null otherwise
-  InstantMessage? parseInstantMessage(Map msg);
+  InstantMessage? parseInstantMessage(Mapping msg);
 }

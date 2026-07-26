@@ -29,9 +29,11 @@
  * ==============================================================================
  */
 import 'package:mkm/format.dart';
+import 'package:mkm/type.dart';
 
 import 'helpers.dart';
 import 'secure.dart';
+
 
 /// Interface for signed reliable messages (third/final stage).
 ///
@@ -86,8 +88,8 @@ abstract interface class ReliableMessage implements SecureMessage {
     return messages;
   }
 
-  static List<Map> revert(Iterable<ReliableMessage> messages) {
-    List<Map> array = [];
+  static List<MutableMapping> revert(Iterable<ReliableMessage> messages) {
+    List<MutableMapping> array = [];
     for (ReliableMessage msg in messages) {
       array.add(msg.toMap());
     }
@@ -128,5 +130,5 @@ abstract interface class ReliableMessageFactory {
   /// [msg]: Serialized reliable message data (matches format in [ReliableMessage])
   ///
   /// Returns: [ReliableMessage] instance if parsing succeeds, null otherwise
-  ReliableMessage? parseReliableMessage(Map msg);
+  ReliableMessage? parseReliableMessage(Mapping msg);
 }

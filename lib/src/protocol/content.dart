@@ -33,6 +33,7 @@ import 'package:mkm/type.dart';
 
 import 'helpers.dart';
 
+
 /// Interface for message content (body) that contains the actual message data.
 ///
 /// Represents the core payload of a message, including type identifier, metadata,
@@ -101,8 +102,8 @@ abstract interface class Content implements Mapper {
     return contents;
   }
 
-  static List<Map> revert(Iterable<Content> contents) {
-    List<Map> array = [];
+  static List<MutableMapping> revert(Iterable<Content> contents) {
+    List<MutableMapping> array = [];
     for (Content msg in contents) {
       array.add(msg.toMap());
     }
@@ -141,5 +142,5 @@ abstract interface class ContentFactory {
   ///
   /// [content]: Serialized content data in the Map format defined in [Content]
   /// Returns: [Content] instance if parsing/validation succeeds, null otherwise
-  Content? parseContent(Map content);
+  Content? parseContent(Mapping content);
 }

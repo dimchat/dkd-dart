@@ -36,6 +36,7 @@ import 'instant.dart';
 import 'reliable.dart';
 import 'secure.dart';
 
+
 // -----------------------------------------------------------------------------
 //  Message Helpers
 // -----------------------------------------------------------------------------
@@ -219,7 +220,7 @@ final sharedMessageExtensions = MessageExtensions();
 ///
 /// Provides a unified entry point for accessing all message-related helpers,
 /// ensuring consistent management of message components (Content/Envelope/InstantMessage etc.).
-class MessageExtensions {
+final class MessageExtensions {
   factory MessageExtensions() => _instance;
   static final MessageExtensions _instance = MessageExtensions._internal();
   MessageExtensions._internal();

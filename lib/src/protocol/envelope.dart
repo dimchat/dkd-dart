@@ -138,7 +138,7 @@ abstract interface class EnvelopeFactory {
   /// [env]: Serialized envelope data in the Map format defined in [Envelope]
   ///
   /// Returns: [Envelope] instance if parsing/validation succeeds, null otherwise
-  Envelope? parseEnvelope(Map env);
+  Envelope? parseEnvelope(Mapping env);
 }
 
 

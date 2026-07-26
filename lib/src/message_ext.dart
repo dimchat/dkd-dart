@@ -28,7 +28,10 @@
  * SOFTWARE.
  * ==============================================================================
  */
+import 'package:mkm/type.dart';
+
 import 'protocol/helpers.dart';
+
 
 // -----------------------------------------------------------------------------
 //  General Message Helper
@@ -56,7 +59,7 @@ abstract interface class GeneralMessageHelper /*
   /// @param defaultValue - Fallback value if type is not found
   ///
   /// @return Extracted content type (or defaultValue if not present)
-  String? getContentType(Map content, [String? defaultValue]);
+  String? getContentType(Mapping content, [String? defaultValue]);
 
 }
 

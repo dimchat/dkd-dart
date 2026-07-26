@@ -29,6 +29,7 @@
  * ==============================================================================
  */
 import 'package:mkm/format.dart';
+import 'package:mkm/type.dart';
 
 import 'envelope.dart';
 import 'helpers.dart';
@@ -108,5 +109,5 @@ abstract interface class SecureMessageFactory {
   /// [msg]: Serialized secure message data (matches format in [SecureMessage])
   ///
   /// Returns: [SecureMessage] instance if parsing succeeds, null otherwise
-  SecureMessage? parseSecureMessage(Map msg);
+  SecureMessage? parseSecureMessage(Mapping msg);
 }
