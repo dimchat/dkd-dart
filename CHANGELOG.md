@@ -1,3 +1,7 @@
+## 2.4.1
+
+- Invalid implementation override.
+
 ## 2.4.0
 
 - Generate ID without terminal.

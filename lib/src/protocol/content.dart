@@ -55,7 +55,7 @@ import 'helpers.dart';
 ///   //...
 /// }
 /// ```
-abstract interface class Content implements Mapper {
+abstract interface class Content implements Mapper<String, dynamic> {
 
   /// Message type identifier.
   ///

@@ -51,7 +51,7 @@ import 'helpers.dart';
 ///   "type"     : "text"        // Optional message type
 /// }
 /// ```
-abstract interface class Envelope implements Mapper {
+abstract interface class Envelope implements Mapper<String, dynamic> {
 
   /// Unique identifier of the message sender.
   ///
@@ -213,7 +213,7 @@ abstract interface class EnvelopeFactory {
 ///   ...
 /// }
 /// ```
-abstract interface class Message implements Mapper {
+abstract interface class Message implements Mapper<String, dynamic> {
 
   /// Complete message envelope containing routing metadata.
   ///
