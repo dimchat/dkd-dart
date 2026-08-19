@@ -1,3 +1,7 @@
+## 2.4.0
+
+- Generate ID without terminal.
+
 ## 2.3.6
 
 - Type alias.
