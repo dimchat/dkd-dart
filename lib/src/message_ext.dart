@@ -30,6 +30,7 @@
  */
 import 'package:mkm/type.dart';
 
+import 'protocol/envelope.dart';
 import 'protocol/helpers.dart';
 
 
@@ -60,6 +61,16 @@ abstract interface class GeneralMessageHelper /*
   ///
   /// @return Extracted content type (or defaultValue if not present)
   String? getContentType(Mapping content, [String? defaultValue]);
+
+  /// Checks whether this is a broadcast message.
+  ///
+  /// 1. If receiver is broadcast, return true
+  /// 2. If group exists and is broadcast, return true too
+  ///
+  /// @param message - message with sender, group (optional)
+  ///
+  /// @return true on broadcast
+  bool isBroadcast(Message message);
 
 }
 

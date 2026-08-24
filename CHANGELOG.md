@@ -1,3 +1,7 @@
+## 2.4.2
+
+- Check broadcast message.
+
 ## 2.4.1
 
 - Invalid implementation override.
