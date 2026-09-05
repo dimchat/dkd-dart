@@ -28,7 +28,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
+import 'dart:typed_data';
+
 import 'package:mkm/protocol.dart';
+
+import '../dkd/bundle.dart';
 
 import 'content.dart';
 import 'envelope.dart';
@@ -158,6 +162,7 @@ abstract interface class InstantMessageHelper {
 /// Helper interface for secure message management.
 ///
 /// Manages secure message factories and provides core functionality for:
+/// - Creating secure messages (instant message + encrypted data + key bundles)
 /// - Parsing raw secure message data into strongly-typed [SecureMessage] instances
 ///
 /// SecureMessage represents an encrypted message (InstantMessage after encryption)
@@ -166,6 +171,20 @@ abstract interface class SecureMessageHelper {
 
   void setSecureMessageFactory(SecureMessageFactory factory);
   SecureMessageFactory? getSecureMessageFactory();
+
+  /// Creates a secure message from instant message, adding 'data' and 'keys'.
+  ///
+  /// Encrypts the plaintext content with a symmetric key, then encrypts the key
+  /// for each receiver terminal, forming the encrypted data and key bundles.
+  ///
+  /// @param iMsg       - plain message
+  ///
+  /// @param ciphertext - encrypted data of content
+  ///
+  /// @param keyBundles - encrypted key bundles
+  ///
+  /// @return SecureMessage
+  SecureMessage createSecureMessage(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles);
 
   /// Parses raw secure message data into a strongly-typed [SecureMessage] instance.
   ///
@@ -182,6 +201,7 @@ abstract interface class SecureMessageHelper {
 /// Helper interface for reliable message management.
 ///
 /// Manages reliable message factories and provides core functionality for:
+/// - Creating reliable messages (secure message + signature)
 /// - Parsing raw reliable message data into strongly-typed [ReliableMessage] instances
 ///
 /// ReliableMessage represents a signed secure message (SecureMessage after signing)
@@ -190,6 +210,18 @@ abstract interface class ReliableMessageHelper {
 
   void setReliableMessageFactory(ReliableMessageFactory factory);
   ReliableMessageFactory? getReliableMessageFactory();
+
+  /// Creates a reliable message from secure message, adding 'signature'.
+  ///
+  /// Signs the encrypted content data with the sender's private key, forming
+  /// the digital signature for authenticity and integrity verification.
+  ///
+  /// @param sMsg      - encrypted message
+  ///
+  /// @param signature - signature of encrypted content data
+  ///
+  /// @return ReliableMessage
+  ReliableMessage createReliableMessage(SecureMessage sMsg, Uint8List signature);
 
   /// Parses raw reliable message data into a strongly-typed [ReliableMessage] instance.
   ///

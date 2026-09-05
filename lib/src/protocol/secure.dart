@@ -28,11 +28,17 @@
  * SOFTWARE.
  * ==============================================================================
  */
+import 'dart:typed_data';
+
 import 'package:mkm/format.dart';
+import 'package:mkm/protocol.dart';
 import 'package:mkm/type.dart';
+
+import '../dkd/bundle.dart';
 
 import 'envelope.dart';
 import 'helpers.dart';
+import 'instant.dart';
 
 
 /// Interface for encrypted secure messages (second stage).
@@ -79,17 +85,22 @@ abstract interface class SecureMessage implements Message {
   //  Factory methods
   //
 
+  static SecureMessage create(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles) {
+    final helper = sharedMessageExtensions.secureHelper;
+    return helper!.createSecureMessage(iMsg, ciphertext, keyBundles);
+  }
+
   static SecureMessage? parse(Object? msg) {
-    var helper = sharedMessageExtensions.secureHelper;
+    final helper = sharedMessageExtensions.secureHelper;
     return helper!.parseSecureMessage(msg);
   }
 
   static SecureMessageFactory? getFactory() {
-    var helper = sharedMessageExtensions.secureHelper;
+    final helper = sharedMessageExtensions.secureHelper;
     return helper!.getSecureMessageFactory();
   }
   static void setFactory(SecureMessageFactory factory) {
-    var helper = sharedMessageExtensions.secureHelper;
+    final helper = sharedMessageExtensions.secureHelper;
     helper!.setSecureMessageFactory(factory);
   }
 }
@@ -100,6 +111,20 @@ abstract interface class SecureMessage implements Message {
 /// Provides a method to reconstruct secure messages from their serialized Map/JSON
 /// representation, with proper validation of encrypted data and keys.
 abstract interface class SecureMessageFactory {
+
+  /// Creates a secure message from instant message, adding 'data' and 'keys'.
+  ///
+  /// Encrypts the plaintext content with a symmetric key, then encrypts the key
+  /// for each receiver terminal, forming the encrypted data and key bundles.
+  ///
+  /// [iMsg]: Plain message (with envelope and content)
+  ///
+  /// [ciphertext]: Encrypted data of content
+  ///
+  /// [keyBundles]: Encrypted key bundles (terminal → encrypted key data)
+  ///
+  /// Returns: [SecureMessage] instance
+  SecureMessage createSecureMessage(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles);
 
   /// Parses a serialized Map into a [SecureMessage] instance.
   ///

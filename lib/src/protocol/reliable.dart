@@ -28,6 +28,8 @@
  * SOFTWARE.
  * ==============================================================================
  */
+import 'dart:typed_data';
+
 import 'package:mkm/format.dart';
 import 'package:mkm/type.dart';
 
@@ -78,7 +80,7 @@ abstract interface class ReliableMessage implements SecureMessage {
   static List<ReliableMessage> convert(Iterable array) {
     List<ReliableMessage> messages = [];
     ReliableMessage? msg;
-    for (var item in array) {
+    for (final item in array) {
       msg = parse(item);
       if (msg == null) {
         continue;
@@ -100,17 +102,22 @@ abstract interface class ReliableMessage implements SecureMessage {
   //  Factory methods
   //
 
+  static ReliableMessage create(SecureMessage sMsg, Uint8List signature) {
+    final helper = sharedMessageExtensions.reliableHelper;
+    return helper!.createReliableMessage(sMsg, signature);
+  }
+
   static ReliableMessage? parse(Object? msg) {
-    var helper = sharedMessageExtensions.reliableHelper;
+    final helper = sharedMessageExtensions.reliableHelper;
     return helper!.parseReliableMessage(msg);
   }
 
   static ReliableMessageFactory? getFactory() {
-    var helper = sharedMessageExtensions.reliableHelper;
+    final helper = sharedMessageExtensions.reliableHelper;
     return helper!.getReliableMessageFactory();
   }
   static void setFactory(ReliableMessageFactory factory) {
-    var helper = sharedMessageExtensions.reliableHelper;
+    final helper = sharedMessageExtensions.reliableHelper;
     helper!.setReliableMessageFactory(factory);
   }
 }
@@ -121,6 +128,18 @@ abstract interface class ReliableMessage implements SecureMessage {
 /// Provides a method to reconstruct reliable messages from their serialized Map/JSON
 /// representation, with validation of both encrypted data and digital signature.
 abstract interface class ReliableMessageFactory {
+
+  /// Creates a reliable message from secure message, adding 'signature'.
+  ///
+  /// Signs the encrypted content data with the sender's private key, forming
+  /// the digital signature for authenticity and integrity verification.
+  ///
+  /// [sMsg]: Encrypted message
+  ///
+  /// [signature]: Signature of encrypted content data
+  ///
+  /// Returns: [ReliableMessage] instance
+  ReliableMessage createReliableMessage(SecureMessage sMsg, Uint8List signature);
 
   /// Parses a serialized Map into a [ReliableMessage] instance.
   ///

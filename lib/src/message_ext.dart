@@ -35,14 +35,14 @@ import 'protocol/helpers.dart';
 
 
 // -----------------------------------------------------------------------------
-//  General Message Helper
+//  Message Handler
 // -----------------------------------------------------------------------------
 
-/// General message helper interface for common message system utilities.
+/// Message handler interface for common message system utilities.
 ///
 /// Combines utility methods for message component parsing (e.g., content type extraction)
-/// and acts as a unified interface for core message helpers.
-abstract interface class GeneralMessageHelper /*
+/// and acts as a unified interface for core message handlers.
+abstract interface class MessageHandler /*
     implements ContentHelper, EnvelopeHelper,
         InstantMessageHelper, SecureMessageHelper, ReliableMessageHelper */{
 
@@ -77,11 +77,11 @@ abstract interface class GeneralMessageHelper /*
 /// General Extensions
 /// ~~~~~~~~~~~~~~~~~~
 
-GeneralMessageHelper? _msgHelper;
+MessageHandler? _msgHandler;
 
-extension GeneralMessageExtension on MessageExtensions {
+extension MessageHandlerExtension on MessageExtensions {
 
-  GeneralMessageHelper? get helper => _msgHelper;
-  set helper(GeneralMessageHelper? ext) => _msgHelper = ext;
+  MessageHandler? get handler => _msgHandler;
+  set handler(MessageHandler? ext) => _msgHandler = ext;
 
 }

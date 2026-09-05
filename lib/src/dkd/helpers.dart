@@ -37,102 +37,168 @@ import 'package:mkm/type.dart';
 
 import 'bundle.dart';
 
-
-/// EncryptedBundle Extensions
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-EncryptedBundleHelper _bundleHelper = DefaultBundleHelper();
+EncryptedBundleHandler _bundleHandler = DefaultBundleHandler();
 
 extension BundleExtension on AccountExtensions {
 
-  EncryptedBundleHelper get bundleHelper => _bundleHelper;
-  set bundleHelper(EncryptedBundleHelper agent) => _bundleHelper = agent;
+  EncryptedBundleHandler get bundleHandler => _bundleHandler;
+  set bundleHandler(EncryptedBundleHandler handler) => _bundleHandler = handler;
 
 }
 
-abstract interface class EncryptedBundleHelper {
+abstract interface class EncryptedBundleHandler {
 
-  ///  Encode key data
+  /// Encode key data
   ///
-  /// @param bundle - encrypted key data with targets (ID terminals)
-  /// @param did    - user ID
+  /// @param bundle   - encrypted key data with targets (ID terminals)
+  /// @param receiver - user ID
   /// @return encoded key data with targets (ID + terminals)
-  Map<String, Object> encodeBundle(EncryptedBundle bundle, ID did);
+  Map<String, Object> encodeBundle(EncryptedBundle bundle, ID receiver);
 
-  ///  Decode key data from 'message.keys'
+  /// Decode key data from 'message.keys'
   ///
   /// @param encodedKeys - encoded key data with targets (ID + terminals)
-  /// @param did         - receiver ID
-  /// @param terminals   - visa terminals
+  /// @param receiver    - user ID
+  /// @param terminals   - visa terminals (null to decode all terminals)
   /// @return encrypted key data with targets (ID terminals)
-  EncryptedBundle decodeBundle(Mapping keys, ID did, Iterable<String> terminals);
+  EncryptedBundle decodeBundle(Mapping encodedKeys, ID receiver, Iterable<String>? terminals);
 
 }
 
-class DefaultBundleHelper implements EncryptedBundleHelper {
+class DefaultBundleHandler implements EncryptedBundleHandler {
 
   @override
-  Map<String, Object> encodeBundle(EncryptedBundle bundle, ID did) {
-    // assert(did.terminal == null, 'ID should not contain terminal here: $did');
-    String identifier = did.withoutTerminal().toString();
-    Map<String, Object> encodedKeys = {};
+  Map<String, Object> encodeBundle(EncryptedBundle bundle, ID receiver) {
+    //
+    //  0. ID string without terminal
+    //
+    assert(receiver.terminal == null, 'ID should not contain terminal here: $receiver');
+    final String identifier = receiver.withoutTerminal().toString();
+    final Map<String, Object> encodedKeys = {};
     String target;
-    Object base64;
-    Map<String, Uint8List> map = bundle.toMap();
-    map.forEach((terminal, data) {
-      // encode data
-      base64 = Base64.encode(data);
-      if (terminal.isEmpty || terminal == '*') {
+    final Map<String, Uint8List> map = bundle.toMap();
+    map.forEach((key, value) {
+      target = key;
+      //
+      //  1. check target
+      //
+      if (target.isEmpty || target == '/') {
+        // Naked ID
         target = identifier;
+      } else if (target.startsWith('/')) {
+        assert(false, 'entry error: $key -> $value');
+        target = identifier + target;
       } else {
-        target = '$identifier/$terminal';
+        // Dressed ID
+        target = '$identifier/$target';
       }
-      // insert to 'message.keys' with ID + terminal
-      encodedKeys[target] = base64;
+      //
+      //  2. encode data (base64)
+      //
+      final ted = TransportableData.create(value);
+      assert(ted.isNotEmpty, 'failed to encode data: $value');
+      //
+      //  3. insert to 'message.keys' with ID + terminal
+      //
+      encodedKeys[target] = ted.serialize();
     });
     // OK
     return encodedKeys;
   }
 
-  @override
-  EncryptedBundle decodeBundle(Mapping keys, ID did, Iterable<String> terminals) {
-    EncryptedBundle bundle = UserEncryptedBundle();
+  /// Decode bundle for all terminals of the receiver
+  EncryptedBundle _decodeBundle(Mapping encodedKeys, ID receiver) {
+    final bundle = UserEncryptedBundle();
     //
-    //  0. ID string without terminal (base identifier)
+    //  0. ID string without terminal
     //
-    String identifier = did.withoutTerminal().toString();
+    final String identifier = receiver.withoutTerminal().toString();
+    final String prefix = '$identifier/';
+    final int begin = prefix.length;
     String target;
-    Object? base64;
-    TransportableData? ted;
-    Uint8List? data;
-    for (String item in terminals) {
-      target = item.isEmpty ? '*' : item;
+    for (final entry in encodedKeys.entries) {
+      target = entry.key;
+      final Object? base64 = entry.value;
       //
-      //  1. Get encoded data for target (ID + terminal)
-      //    - Wildcard (*) uses base ID without terminal suffix
-      //    - Specific terminals use "ID/terminal" format
+      //  1. check target
       //
-      if (target == '*') {
-        base64 = keys[identifier];
+      if (target == identifier) {
+        // Naked ID
+        target = '/';
+      } else if (target.startsWith(prefix)) {
+        // Dressed ID
+        target = target.substring(begin);
       } else {
-        base64 = keys['$identifier/$target'];
-      }
-      if (base64 == null) {
-        // Key data not found for this terminal - skip
+        // ID not matched, skip this item
         continue;
       }
       //
-      //  2. Decode base64 data to raw bytes
+      //  2. decode data
       //
-      ted = TransportableData.parse(base64);
-      data = ted?.bytes;
+      final ted = TransportableData.parse(base64);
+      final data = ted?.bytes;
       if (data == null) {
+        assert(false, 'entry error: $entry');
+        continue;
+      }
+      //
+      //  3. put data for target (ID terminal)
+      //
+      assert(bundle[target] == null, 'duplicated terminal: $target, $encodedKeys');
+      bundle[target] = data;
+    }
+    // OK
+    return bundle;
+  }
+
+  @override
+  EncryptedBundle decodeBundle(Mapping encodedKeys, ID receiver, Iterable<String>? terminals) {
+    if (terminals == null) {
+      // decode full bundle
+      return _decodeBundle(encodedKeys, receiver);
+    }
+    final bundle = UserEncryptedBundle();
+    //
+    //  0. ID string without terminal
+    //
+    assert(receiver.terminal == null, 'ID should not contain terminal here: $receiver');
+    final String identifier = receiver.withoutTerminal().toString();
+    String target;
+    for (final item in terminals) {
+      //
+      //  1. get encoded data with target (ID + terminal)
+      //
+      Object? base64;
+      if (item.isEmpty || item == '/') {
+        // Naked ID
+        base64 = encodedKeys[identifier];
+        target = '/';
+      } else if (item.startsWith('/')) {
+        assert(false, 'terminal error: $item');
+        base64 = encodedKeys[identifier + item];
+        target = item.substring(1);
+      } else {
+        // Dressed ID
+        base64 = encodedKeys['$identifier/$item'];
+        target = item;
+      }
+      if (base64 == null) {
+        // key data not found
+        continue;
+      }
+      //
+      //  2. decode data
+      //
+      final ted = TransportableData.parse(base64);
+      final data = ted?.bytes;
+      if (data == null || data.isEmpty) {
         assert(false, 'key data error: $item -> $base64');
         continue;
       }
       //
-      //  3. Store decoded data for the terminal
+      //  3. put data for target (ID terminal)
       //
+      assert(bundle[target] == null, 'duplicated terminal: $item, $encodedKeys');
       bundle[target] = data;
     }
     // OK

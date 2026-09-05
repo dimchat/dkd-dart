@@ -37,78 +37,52 @@ import 'package:mkm/type.dart';
 import 'helpers.dart';
 
 
-/// Encrypted data bundle for user-specific key encryption across terminals.
+/// User Encrypted Key Data with Terminals
 ///
 /// Represents a collection of encrypted symmetric keys (or other sensitive data)
 /// mapped to user terminals (devices/sessions). Enables device-specific encryption
 /// so that only the target user's specific terminals can decrypt the data.
-///
-/// Key features:
-/// - Maps terminal identifiers to encrypted byte data
-/// - Supports encoding/decoding to/from message key format
-/// - Handles wildcard terminal (*) for device-agnostic encryption
 abstract interface class EncryptedBundle {
 
-  /// Converts the bundle to a raw map (terminal → encrypted bytes).
-  ///
-  /// Returns: Map with terminal strings as keys and encrypted Uint8List data
+  // terminal -> encrypted key.data
   Map<String, Uint8List> toMap();
 
-  /// Checks if the bundle contains no encrypted data for any terminal.
-  ///
-  /// @return True if empty, false otherwise
   bool get isEmpty;
   bool get isNotEmpty;
 
-  /// Retrieves encrypted key data for a specific terminal (index operator).
+  /// Get encrypted key data for terminal (index operator)
   ///
-  /// Parameters:
-  /// - [terminal] : Target terminal identifier (e.g., "mobile", "desktop", "*" for wildcard)
-  ///
-  /// Returns: Encrypted byte data for the terminal (null if not found)
+  /// @param terminal - ID terminal
+  /// @return encrypted key data
   Uint8List? operator [](String terminal);
 
-  /// Stores encrypted key data for a specific terminal (index assignment operator).
+  /// Put encrypted key data for terminal (index assignment operator)
   ///
-  /// Parameters:
-  /// - [terminal] : Target terminal identifier
-  /// - [value]    : Encrypted byte data to store (null removes the entry)
+  /// @param terminal - ID terminal
+  /// @param value    - encrypted key data (null removes the entry)
   void operator []=(String terminal, Uint8List? value);
 
-  /// Removes encrypted data for a specific terminal from the bundle.
+  /// Remove encrypted key data for terminal
   ///
-  /// Parameters:
-  /// - [terminal] : Target terminal identifier to remove
-  ///
-  /// Returns: Removed encrypted byte data (null if terminal not found)
+  /// @param terminal - ID terminal
+  /// @return removed data
   Uint8List? remove(String terminal);
 
-  /// Encodes the bundle into a message-compatible map for transmission.
+  /// Encode key data
   ///
-  /// Formats the encrypted data with user ID + terminal identifiers as keys,
-  /// suitable for inclusion in message "keys" field.
-  ///
-  /// Parameters:
-  /// - [did] : User ID associated with this encrypted bundle
-  ///
-  /// Returns: Encoded map (ID/terminal → base64-encoded encrypted data)
-  Map<String, Object> encode(ID did);
+  /// @param receiver - user ID
+  /// @return encoded key data with targets (ID + terminals)
+  Map<String, Object> encode(ID receiver);
 
-  /// Decodes an encrypted bundle from a message's "keys" field (static factory).
+  /// Decode key data from 'message.keys'
   ///
-  /// Extracts and parses terminal-specific encrypted data for a target user,
-  /// converting base64-encoded data back to raw bytes. Handles wildcard (*)
-  /// terminals and validates data integrity.
-  ///
-  /// Parameters:
-  /// - [keys]      : Encoded key map from message (ID+terminal → base64 data)
-  /// - [did]       : Target user ID to decode data for
-  /// - [terminals] : List of terminals to extract data for
-  ///
-  /// Returns: Decoded EncryptedBundle with terminal-specific encrypted data
-  static EncryptedBundle decode(Mapping keys, ID did, Iterable<String> terminals) {
-    final helper = sharedAccountExtensions.bundleHelper;
-    return helper.decodeBundle(keys, did, terminals);
+  /// @param encodedKeys - encoded key data with targets (ID + terminals)
+  /// @param receiver    - user ID
+  /// @param terminals   - visa terminals
+  /// @return encrypted key data with targets (ID terminals)
+  static EncryptedBundle decode(Mapping encodedKeys, ID receiver, [Iterable<String>? terminals]) {
+    final helper = sharedAccountExtensions.bundleHandler;
+    return helper.decodeBundle(encodedKeys, receiver, terminals);
   }
 
 }
@@ -116,10 +90,11 @@ abstract interface class EncryptedBundle {
 
 class UserEncryptedBundle implements EncryptedBundle {
 
+  // terminal -> encrypted key.data
   final Map<String, Uint8List> _map = {};
 
   String get className {
-    String name = 'EncryptedBundle';
+    String name = 'UserEncryptedBundle';
     assert(() {
       name = runtimeType.toString();
       return true;
@@ -162,9 +137,9 @@ class UserEncryptedBundle implements EncryptedBundle {
   Uint8List? remove(String terminal) => _map.remove(terminal);
 
   @override
-  Map<String, Object> encode(ID did) {
-    final helper = sharedAccountExtensions.bundleHelper;
-    return helper.encodeBundle(this, did);
+  Map<String, Object> encode(ID receiver) {
+    final helper = sharedAccountExtensions.bundleHandler;
+    return helper.encodeBundle(this, receiver);
   }
 
 }
