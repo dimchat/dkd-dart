@@ -41,7 +41,10 @@ EncryptedBundleHandler _bundleHandler = DefaultBundleHandler();
 
 extension BundleExtension on AccountExtensions {
 
+  /// Get the bundle handler
   EncryptedBundleHandler get bundleHandler => _bundleHandler;
+
+  /// Set the bundle handler
   set bundleHandler(EncryptedBundleHandler handler) => _bundleHandler = handler;
 
 }
@@ -50,17 +53,19 @@ abstract interface class EncryptedBundleHandler {
 
   /// Encode key data
   ///
-  /// @param bundle   - encrypted key data with targets (ID terminals)
-  /// @param receiver - user ID
-  /// @return encoded key data with targets (ID + terminals)
+  /// [bundle] is the encrypted key data with targets (ID terminals).
+  /// [receiver] is the user ID.
+  ///
+  /// Returns encoded key data with targets (ID + terminals).
   Map<String, Object> encodeBundle(EncryptedBundle bundle, ID receiver);
 
   /// Decode key data from 'message.keys'
   ///
-  /// @param encodedKeys - encoded key data with targets (ID + terminals)
-  /// @param receiver    - user ID
-  /// @param terminals   - visa terminals (null to decode all terminals)
-  /// @return encrypted key data with targets (ID terminals)
+  /// [encodedKeys] is the encoded key data with targets (ID + terminals).
+  /// [receiver] is the user ID.
+  /// [terminals] is the visa terminals (null to decode all terminals).
+  ///
+  /// Returns encrypted key data with targets (ID terminals).
   EncryptedBundle decodeBundle(Mapping encodedKeys, ID receiver, Iterable<String>? terminals);
 
 }
@@ -107,6 +112,14 @@ class DefaultBundleHandler implements EncryptedBundleHandler {
   }
 
   /// Decode bundle for all terminals of the receiver
+  ///
+  /// Scans every entry in [encodedKeys], keeps the ones whose target is
+  /// the [receiver] (Naked ID or ID with a terminal), and skips the others.
+  ///
+  /// [encodedKeys] is the encoded key data with targets (ID + terminals).
+  /// [receiver] is the user ID (without terminal).
+  ///
+  /// Returns a bundle containing the decoded data for all matched terminals.
   EncryptedBundle _decodeBundle(Mapping encodedKeys, ID receiver) {
     final bundle = UserEncryptedBundle();
     //

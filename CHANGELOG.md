@@ -1,3 +1,7 @@
+## 2.5.0
+
+- EncryptedBundle.
+
 ## 2.4.2
 
 - Check broadcast message.

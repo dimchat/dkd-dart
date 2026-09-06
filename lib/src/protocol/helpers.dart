@@ -55,7 +55,17 @@ import 'secure.dart';
 /// categorized by message type identifiers (e.g., "01" for text, "88" for command).
 abstract interface class ContentHelper {
 
+  /// Set the content factory for a message type.
+  ///
+  /// [msgType] is the message type identifier.
+  /// [factory] is the factory to be registered.
   void setContentFactory(String msgType, ContentFactory factory);
+
+  /// Get the content factory for a message type.
+  ///
+  /// [msgType] is the message type identifier.
+  ///
+  /// Returns the registered factory for the type, or null if not registered.
   ContentFactory? getContentFactory(String msgType);
 
   /// Parses raw content data into a strongly-typed [Content] instance.
@@ -63,9 +73,9 @@ abstract interface class ContentHelper {
   /// Converts arbitrary raw content data (e.g., map, JSON string) into a valid
   /// Content object based on the registered factories for the message type.
   ///
-  /// @param content - Raw content data to parse
+  /// [content] is the raw content data to parse.
   ///
-  /// @return Parsed Content instance (null if parsing fails or no factory exists)
+  /// Returns a parsed [Content] instance (null if parsing fails or no factory exists).
   Content? parseContent(Object? content);
 
 }
@@ -80,7 +90,14 @@ abstract interface class ContentHelper {
 /// and timestamp (when the message was sent).
 abstract interface class EnvelopeHelper {
 
+  /// Set the envelope factory.
+  ///
+  /// [factory] is the factory to be registered.
   void setEnvelopeFactory(EnvelopeFactory factory);
+
+  /// Get the envelope factory.
+  ///
+  /// Returns the registered [EnvelopeFactory], or null if not registered.
   EnvelopeFactory? getEnvelopeFactory();
 
   /// Creates a custom message envelope with specified routing metadata.
@@ -88,13 +105,11 @@ abstract interface class EnvelopeHelper {
   /// Builds an Envelope from explicit sender/receiver/timestamp parameters,
   /// forming the header of a message (routing information).
   ///
-  /// @param sender - Mandatory ID of the message sender
+  /// [sender] is the ID of the message sender.
+  /// [receiver] is the ID of the message receiver (user/group).
+  /// [time] is the message timestamp (defaults to current time if null).
   ///
-  /// @param receiver - Mandatory ID of the message receiver (user/group)
-  ///
-  /// @param time - Optional timestamp (defaults to current time if null)
-  ///
-  /// @return Custom Envelope instance with routing metadata
+  /// Returns a custom [Envelope] instance with routing metadata.
   Envelope createEnvelope({required ID sender, required ID receiver, DateTime? time});
 
   /// Parses raw envelope data into a strongly-typed [Envelope] instance.
@@ -102,9 +117,9 @@ abstract interface class EnvelopeHelper {
   /// Converts arbitrary raw envelope data (e.g., map, JSON string) into a valid
   /// Envelope object for consistent message routing.
   ///
-  /// @param env - Raw envelope data to parse
+  /// [env] is the raw envelope data to parse.
   ///
-  /// @return Parsed Envelope instance (null if parsing fails)
+  /// Returns a parsed [Envelope] instance (null if parsing fails).
   Envelope? parseEnvelope(Object? env);
 
 }
@@ -120,7 +135,14 @@ abstract interface class EnvelopeHelper {
 /// before security processing (encryption/signing).
 abstract interface class InstantMessageHelper {
 
+  /// Set the instant message factory.
+  ///
+  /// [factory] is the factory to be registered.
   void setInstantMessageFactory(InstantMessageFactory factory);
+
+  /// Get the instant message factory.
+  ///
+  /// Returns the registered [InstantMessageFactory], or null if not registered.
   InstantMessageFactory? getInstantMessageFactory();
 
   /// Creates an instant message from envelope (header) and content (body).
@@ -128,11 +150,10 @@ abstract interface class InstantMessageHelper {
   /// Combines routing metadata (envelope) with message payload (content) to form
   /// a complete, unencrypted instant message.
   ///
-  /// @param head - Message envelope (routing metadata: sender/receiver/time)
+  /// [head] is the message envelope (routing metadata: sender/receiver/time).
+  /// [body] is the message content (payload: text, file, command, etc.).
   ///
-  /// @param body - Message content (payload: text, file, command, etc.)
-  ///
-  /// @return Complete InstantMessage instance
+  /// Returns a complete [InstantMessage] instance.
   InstantMessage createInstantMessage(Envelope head, Content body);
 
   /// Parses raw instant message data into a strongly-typed [InstantMessage] instance.
@@ -140,9 +161,9 @@ abstract interface class InstantMessageHelper {
   /// Converts arbitrary raw instant message data (e.g., map, JSON string) into a valid
   /// InstantMessage object for consistent message processing.
   ///
-  /// @param msg - Raw instant message data to parse
+  /// [msg] is the raw instant message data to parse.
   ///
-  /// @return Parsed InstantMessage instance (null if parsing fails)
+  /// Returns a parsed [InstantMessage] instance (null if parsing fails).
   InstantMessage? parseInstantMessage(Object? msg);
 
   /// Generates a unique serial number (SN) for message identification.
@@ -150,11 +171,10 @@ abstract interface class InstantMessageHelper {
   /// Creates a cryptographically unique or time-based serial number to uniquely
   /// identify a message (used for tracking, deduplication, and receipts).
   ///
-  /// @param msgType - Optional message type identifier (for type-specific SN generation)
+  /// [msgType] is the message type identifier (for type-specific SN generation).
+  /// [now] is the timestamp (defaults to current time if null).
   ///
-  /// @param now - Optional timestamp (defaults to current time if null)
-  ///
-  /// @return Unique serial number for the message
+  /// Returns a unique serial number (uint64) for the message.
   int generateSerialNumber(String? msgType, DateTime? now);
 
 }
@@ -169,7 +189,14 @@ abstract interface class InstantMessageHelper {
 /// that protects the content from unauthorized access.
 abstract interface class SecureMessageHelper {
 
+  /// Set the secure message factory.
+  ///
+  /// [factory] is the factory to be registered.
   void setSecureMessageFactory(SecureMessageFactory factory);
+
+  /// Get the secure message factory.
+  ///
+  /// Returns the registered [SecureMessageFactory], or null if not registered.
   SecureMessageFactory? getSecureMessageFactory();
 
   /// Creates a secure message from instant message, adding 'data' and 'keys'.
@@ -177,13 +204,11 @@ abstract interface class SecureMessageHelper {
   /// Encrypts the plaintext content with a symmetric key, then encrypts the key
   /// for each receiver terminal, forming the encrypted data and key bundles.
   ///
-  /// @param iMsg       - plain message
+  /// [iMsg] is the plain instant message.
+  /// [ciphertext] is the encrypted data of the content.
+  /// [keyBundles] is the encrypted key bundles for the receiver terminals.
   ///
-  /// @param ciphertext - encrypted data of content
-  ///
-  /// @param keyBundles - encrypted key bundles
-  ///
-  /// @return SecureMessage
+  /// Returns a new [SecureMessage] instance.
   SecureMessage createSecureMessage(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles);
 
   /// Parses raw secure message data into a strongly-typed [SecureMessage] instance.
@@ -191,9 +216,9 @@ abstract interface class SecureMessageHelper {
   /// Converts arbitrary raw secure message data (e.g., map, JSON string) into a valid
   /// SecureMessage object for decryption and processing.
   ///
-  /// @param msg - Raw secure message data to parse
+  /// [msg] is the raw secure message data to parse.
   ///
-  /// @return Parsed SecureMessage instance (null if parsing fails)
+  /// Returns a parsed [SecureMessage] instance (null if parsing fails).
   SecureMessage? parseSecureMessage(Object? msg);
 
 }
@@ -208,7 +233,14 @@ abstract interface class SecureMessageHelper {
 /// that ensures message integrity and authenticity (non-repudiation).
 abstract interface class ReliableMessageHelper {
 
+  /// Set the reliable message factory.
+  ///
+  /// [factory] is the factory to be registered.
   void setReliableMessageFactory(ReliableMessageFactory factory);
+
+  /// Get the reliable message factory.
+  ///
+  /// Returns the registered [ReliableMessageFactory], or null if not registered.
   ReliableMessageFactory? getReliableMessageFactory();
 
   /// Creates a reliable message from secure message, adding 'signature'.
@@ -216,21 +248,20 @@ abstract interface class ReliableMessageHelper {
   /// Signs the encrypted content data with the sender's private key, forming
   /// the digital signature for authenticity and integrity verification.
   ///
-  /// @param sMsg      - encrypted message
+  /// [sMsg] is the encrypted secure message.
+  /// [signature] is the signature of the encrypted content data.
   ///
-  /// @param signature - signature of encrypted content data
-  ///
-  /// @return ReliableMessage
+  /// Returns a new [ReliableMessage] instance.
   ReliableMessage createReliableMessage(SecureMessage sMsg, Uint8List signature);
 
   /// Parses raw reliable message data into a strongly-typed [ReliableMessage] instance.
   ///
   /// Converts arbitrary raw reliable message data (e.g., map, JSON string) into a valid
-  /// a valid ReliableMessage object for signature verification and decryption.
+  /// ReliableMessage object for signature verification and decryption.
   ///
-  /// @param msg - Raw reliable message data to parse
+  /// [msg] is the raw reliable message data to parse.
   ///
-  /// @return Parsed ReliableMessage instance (null if parsing fails)
+  /// Returns a parsed [ReliableMessage] instance (null if parsing fails).
   ReliableMessage? parseReliableMessage(Object? msg);
 
 }
@@ -265,7 +296,10 @@ ContentHelper? _contentHelper;
 
 extension ContentExtension on MessageExtensions {
 
+  /// Get the content helper
   ContentHelper? get contentHelper => _contentHelper;
+
+  /// Set the content helper
   set contentHelper(ContentHelper? ext) => _contentHelper = ext;
 
 }
@@ -275,7 +309,10 @@ EnvelopeHelper? _envelopeHelper;
 
 extension EnvelopeExtension on MessageExtensions {
 
+  /// Get the envelope helper
   EnvelopeHelper? get envelopeHelper => _envelopeHelper;
+
+  /// Set the envelope helper
   set envelopeHelper(EnvelopeHelper? ext) => _envelopeHelper = ext;
 
 }
@@ -285,7 +322,10 @@ InstantMessageHelper? _instantHelper;
 
 extension InstantMessageExtension on MessageExtensions {
 
+  /// Get the instant message helper
   InstantMessageHelper? get instantHelper => _instantHelper;
+
+  /// Set the instant message helper
   set instantHelper(InstantMessageHelper? ext) => _instantHelper = ext;
 
 }
@@ -295,7 +335,10 @@ SecureMessageHelper? _secureHelper;
 
 extension SecureMessageExtension on MessageExtensions {
 
+  /// Get the secure message helper
   SecureMessageHelper? get secureHelper => _secureHelper;
+
+  /// Set the secure message helper
   set secureHelper(SecureMessageHelper? ext) => _secureHelper = ext;
 
 }
@@ -305,7 +348,10 @@ ReliableMessageHelper? _reliableHelper;
 
 extension ReliableMessageExtension on MessageExtensions {
 
+  /// Get the reliable message helper
   ReliableMessageHelper? get reliableHelper => _reliableHelper;
+
+  /// Set the reliable message helper
   set reliableHelper(ReliableMessageHelper? ext) => _reliableHelper = ext;
 
 }

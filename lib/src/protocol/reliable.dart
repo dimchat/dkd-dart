@@ -77,6 +77,11 @@ abstract interface class ReliableMessage implements SecureMessage {
   //  Conveniences
   //
 
+  /// Convert an array of raw objects into [ReliableMessage] instances.
+  ///
+  /// [array] is a list of raw message data (map/JSON).
+  ///
+  /// Returns a list of parsed [ReliableMessage] instances (invalid items are skipped).
   static List<ReliableMessage> convert(Iterable array) {
     List<ReliableMessage> messages = [];
     ReliableMessage? msg;
@@ -90,6 +95,11 @@ abstract interface class ReliableMessage implements SecureMessage {
     return messages;
   }
 
+  /// Convert [ReliableMessage] instances back to raw map objects.
+  ///
+  /// [messages] is a list of [ReliableMessage] instances.
+  ///
+  /// Returns a list of serialized map (JSON) objects.
   static List<MutableMapping> revert(Iterable<ReliableMessage> messages) {
     List<MutableMapping> array = [];
     for (ReliableMessage msg in messages) {
@@ -102,20 +112,41 @@ abstract interface class ReliableMessage implements SecureMessage {
   //  Factory methods
   //
 
+  /// Create a [ReliableMessage] from a secure message, adding 'signature'.
+  ///
+  /// Signs the encrypted content data with the sender's private key, forming
+  /// the digital signature for authenticity and integrity verification.
+  ///
+  /// [sMsg] is the encrypted secure message.
+  /// [signature] is the signature of the encrypted content data.
+  ///
+  /// Returns a new [ReliableMessage] instance.
   static ReliableMessage create(SecureMessage sMsg, Uint8List signature) {
     final helper = sharedMessageExtensions.reliableHelper;
     return helper!.createReliableMessage(sMsg, signature);
   }
 
+  /// Parse a raw object into a [ReliableMessage] instance.
+  ///
+  /// [msg] is the raw message data (map, JSON string, etc.).
+  ///
+  /// Returns a parsed [ReliableMessage] instance, or null if parsing fails.
   static ReliableMessage? parse(Object? msg) {
     final helper = sharedMessageExtensions.reliableHelper;
     return helper!.parseReliableMessage(msg);
   }
 
+  /// Get the reliable message factory.
+  ///
+  /// Returns the registered [ReliableMessageFactory], or null if not registered.
   static ReliableMessageFactory? getFactory() {
     final helper = sharedMessageExtensions.reliableHelper;
     return helper!.getReliableMessageFactory();
   }
+
+  /// Register the reliable message factory.
+  ///
+  /// [factory] is the factory to be registered.
   static void setFactory(ReliableMessageFactory factory) {
     final helper = sharedMessageExtensions.reliableHelper;
     helper!.setReliableMessageFactory(factory);
@@ -134,11 +165,10 @@ abstract interface class ReliableMessageFactory {
   /// Signs the encrypted content data with the sender's private key, forming
   /// the digital signature for authenticity and integrity verification.
   ///
-  /// [sMsg]: Encrypted message
+  /// [sMsg] is the encrypted message.
+  /// [signature] is the signature of the encrypted content data.
   ///
-  /// [signature]: Signature of encrypted content data
-  ///
-  /// Returns: [ReliableMessage] instance
+  /// Returns a [ReliableMessage] instance.
   ReliableMessage createReliableMessage(SecureMessage sMsg, Uint8List signature);
 
   /// Parses a serialized Map into a [ReliableMessage] instance.
@@ -146,8 +176,8 @@ abstract interface class ReliableMessageFactory {
   /// Validates the structure (required fields: data, keys, signature) and converts
   /// raw values (e.g., Base64 string → TransportableData for signature) to proper types.
   ///
-  /// [msg]: Serialized reliable message data (matches format in [ReliableMessage])
+  /// [msg] is the serialized reliable message data (matches format in [ReliableMessage]).
   ///
-  /// Returns: [ReliableMessage] instance if parsing succeeds, null otherwise
+  /// Returns a [ReliableMessage] instance if parsing succeeds, null otherwise.
   ReliableMessage? parseReliableMessage(Mapping msg);
 }

@@ -73,7 +73,7 @@ abstract interface class Content implements Mapper<String, dynamic> {
   /// Timestamp when the content was created.
   ///
   /// Represented as a [DateTime] object (parsed from Unix timestamp in serialized format).
-  /// Returns: Content creation timestamp, or null if not specified.
+  /// Returns the content creation timestamp, or null if not specified.
   DateTime? get time;
 
   /// Group identifier for group messages.
@@ -81,18 +81,27 @@ abstract interface class Content implements Mapper<String, dynamic> {
   /// **Key Indicator**: The presence of this field (non-null value) signifies that
   /// this is a group message (as opposed to a direct message between two entities).
   ///
-  /// Returns: Group ID for group messages, null for direct messages.
+  /// Returns the group ID for group messages, null for direct messages.
   ID? get group;
-  set group(ID? identifier);
+
+  /// Set the group ID for a group message.
+  ///
+  /// [gid] is the group ID (null to mark as a direct message).
+  set group(ID? gid);
 
   //
   //  Conveniences
   //
 
+  /// Convert an array of raw content objects into [Content] instances.
+  ///
+  /// [array] is a list of raw content data (map/JSON).
+  ///
+  /// Returns a list of parsed [Content] instances (invalid items are skipped).
   static List<Content> convert(Iterable array) {
     List<Content> contents = [];
     Content? msg;
-    for (var item in array) {
+    for (final item in array) {
       msg = parse(item);
       if (msg == null) {
         continue;
@@ -102,6 +111,11 @@ abstract interface class Content implements Mapper<String, dynamic> {
     return contents;
   }
 
+  /// Convert [Content] instances back to raw map objects.
+  ///
+  /// [contents] is a list of [Content] instances.
+  ///
+  /// Returns a list of serialized map (JSON) objects.
   static List<MutableMapping> revert(Iterable<Content> contents) {
     List<MutableMapping> array = [];
     for (Content msg in contents) {
@@ -114,17 +128,32 @@ abstract interface class Content implements Mapper<String, dynamic> {
   //  Factory methods
   //
 
+  /// Parse a raw object into a [Content] instance.
+  ///
+  /// [content] is the raw content data (map, JSON string, etc.).
+  ///
+  /// Returns a parsed [Content] instance, or null if parsing fails.
   static Content? parse(Object? content) {
-    var helper = sharedMessageExtensions.contentHelper;
+    final helper = sharedMessageExtensions.contentHelper;
     return helper!.parseContent(content);
   }
 
+  /// Get the content factory for a message type.
+  ///
+  /// [msgType] is the message type identifier (e.g., "1" for text).
+  ///
+  /// Returns the registered factory for the type, or null if not registered.
   static ContentFactory? getFactory(String msgType) {
-    var helper = sharedMessageExtensions.contentHelper;
+    final helper = sharedMessageExtensions.contentHelper;
     return helper!.getContentFactory(msgType);
   }
+
+  /// Register a content factory for a message type.
+  ///
+  /// [msgType] is the message type identifier.
+  /// [factory] is the factory to be registered.
   static void setFactory(String msgType, ContentFactory factory) {
-    var helper = sharedMessageExtensions.contentHelper;
+    final helper = sharedMessageExtensions.contentHelper;
     helper!.setContentFactory(msgType, factory);
   }
 }
@@ -140,7 +169,8 @@ abstract interface class ContentFactory {
   /// Validates the structure (required fields: type, sn) and converts raw values
   /// (e.g., Unix timestamp → DateTime, group string → ID) to proper types.
   ///
-  /// [content]: Serialized content data in the Map format defined in [Content]
-  /// Returns: [Content] instance if parsing/validation succeeds, null otherwise
+  /// [content] is the serialized content data in the Map format defined in [Content].
+  ///
+  /// Returns a [Content] instance if parsing/validation succeeds, null otherwise.
   Content? parseContent(Mapping content);
 }

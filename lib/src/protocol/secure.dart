@@ -78,27 +78,49 @@ abstract interface class SecureMessage implements Message {
   /// (asymmetric encryption), ensuring only the intended recipient can decrypt it.
   /// The "digest" entry contains a hash of the raw symmetric key for verification.
   ///
-  /// Returns: Map of encrypted keys, or null if no keys are present (uncommon)
+  /// Returns the map of encrypted keys, or null if no keys are present (uncommon).
   Map? get encryptedKeys;  // String => String
 
   //
   //  Factory methods
   //
 
+  /// Create a [SecureMessage] from an instant message, adding 'data' and 'keys'.
+  ///
+  /// Encrypts the plaintext content with a symmetric key, then encrypts the key
+  /// for each receiver terminal, forming the encrypted data and key bundles.
+  ///
+  /// [iMsg] is the plain instant message.
+  /// [ciphertext] is the encrypted data of the content.
+  /// [keyBundles] is the encrypted key bundles for the receiver terminals.
+  ///
+  /// Returns a new [SecureMessage] instance.
   static SecureMessage create(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles) {
     final helper = sharedMessageExtensions.secureHelper;
     return helper!.createSecureMessage(iMsg, ciphertext, keyBundles);
   }
 
+  /// Parse a raw object into a [SecureMessage] instance.
+  ///
+  /// [msg] is the raw message data (map, JSON string, etc.).
+  ///
+  /// Returns a parsed [SecureMessage] instance, or null if parsing fails.
   static SecureMessage? parse(Object? msg) {
     final helper = sharedMessageExtensions.secureHelper;
     return helper!.parseSecureMessage(msg);
   }
 
+  /// Get the secure message factory.
+  ///
+  /// Returns the registered [SecureMessageFactory], or null if not registered.
   static SecureMessageFactory? getFactory() {
     final helper = sharedMessageExtensions.secureHelper;
     return helper!.getSecureMessageFactory();
   }
+
+  /// Register the secure message factory.
+  ///
+  /// [factory] is the factory to be registered.
   static void setFactory(SecureMessageFactory factory) {
     final helper = sharedMessageExtensions.secureHelper;
     helper!.setSecureMessageFactory(factory);
@@ -117,13 +139,11 @@ abstract interface class SecureMessageFactory {
   /// Encrypts the plaintext content with a symmetric key, then encrypts the key
   /// for each receiver terminal, forming the encrypted data and key bundles.
   ///
-  /// [iMsg]: Plain message (with envelope and content)
+  /// [iMsg] is the plain message (with envelope and content).
+  /// [ciphertext] is the encrypted data of the content.
+  /// [keyBundles] is the encrypted key bundles (terminal → encrypted key data).
   ///
-  /// [ciphertext]: Encrypted data of content
-  ///
-  /// [keyBundles]: Encrypted key bundles (terminal → encrypted key data)
-  ///
-  /// Returns: [SecureMessage] instance
+  /// Returns a [SecureMessage] instance.
   SecureMessage createSecureMessage(InstantMessage iMsg, Uint8List ciphertext, Map<ID, EncryptedBundle>? keyBundles);
 
   /// Parses a serialized Map into a [SecureMessage] instance.
@@ -131,8 +151,8 @@ abstract interface class SecureMessageFactory {
   /// Validates the structure (required fields: sender, receiver, data) and converts
   /// raw values (e.g., Base64 string → TransportableData) to proper types.
   ///
-  /// [msg]: Serialized secure message data (matches format in [SecureMessage])
+  /// [msg] is the serialized secure message data (matches format in [SecureMessage]).
   ///
-  /// Returns: [SecureMessage] instance if parsing succeeds, null otherwise
+  /// Returns a [SecureMessage] instance if parsing succeeds, null otherwise.
   SecureMessage? parseSecureMessage(Mapping msg);
 }

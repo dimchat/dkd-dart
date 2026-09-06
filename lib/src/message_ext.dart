@@ -55,11 +55,10 @@ abstract interface class MessageHandler /*
   /// Retrieves the message type identifier (e.g., "01" for text, "88" for command)
   /// from a raw content map with a fallback default value if the type field is missing.
   ///
-  /// @param content - Raw content map containing type metadata
+  /// [content] is the raw content map containing the type metadata.
+  /// [defaultValue] is the fallback value if the type is not found.
   ///
-  /// @param defaultValue - Fallback value if type is not found
-  ///
-  /// @return Extracted content type (or defaultValue if not present)
+  /// Returns the extracted content type (or [defaultValue] if not present).
   String? getContentType(Mapping content, [String? defaultValue]);
 
   /// Checks whether this is a broadcast message.
@@ -67,9 +66,9 @@ abstract interface class MessageHandler /*
   /// 1. If receiver is broadcast, return true
   /// 2. If group exists and is broadcast, return true too
   ///
-  /// @param message - message with sender, group (optional)
+  /// [message] is the message with sender and optional group.
   ///
-  /// @return true on broadcast
+  /// Returns true if the message is a broadcast.
   bool isBroadcast(Message message);
 
 }
@@ -81,7 +80,10 @@ MessageHandler? _msgHandler;
 
 extension MessageHandlerExtension on MessageExtensions {
 
+  /// Get the general message handler
   MessageHandler? get handler => _msgHandler;
+
+  /// Set the general message handler
   set handler(MessageHandler? ext) => _msgHandler = ext;
 
 }

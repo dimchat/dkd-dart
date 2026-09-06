@@ -71,10 +71,15 @@ abstract interface class InstantMessage implements Message {
   //  Conveniences
   //
 
+  /// Convert an array of raw objects into [InstantMessage] instances.
+  ///
+  /// [array] is a list of raw message data (map/JSON).
+  ///
+  /// Returns a list of parsed [InstantMessage] instances (invalid items are skipped).
   static List<InstantMessage> convert(Iterable array) {
     List<InstantMessage> messages = [];
     InstantMessage? msg;
-    for (var item in array) {
+    for (final item in array) {
       msg = parse(item);
       if (msg == null) {
         continue;
@@ -84,6 +89,11 @@ abstract interface class InstantMessage implements Message {
     return messages;
   }
 
+  /// Convert [InstantMessage] instances back to raw map objects.
+  ///
+  /// [messages] is a list of [InstantMessage] instances.
+  ///
+  /// Returns a list of serialized map (JSON) objects.
   static List<MutableMapping> revert(Iterable<InstantMessage> messages) {
     List<MutableMapping> array = [];
     for (InstantMessage msg in messages) {
@@ -96,27 +106,51 @@ abstract interface class InstantMessage implements Message {
   //  Factory methods
   //
 
+  /// Create an [InstantMessage] from envelope and content.
+  ///
+  /// [head] is the message envelope (routing metadata).
+  /// [body] is the message content (payload).
+  ///
+  /// Returns a new [InstantMessage] instance.
   static InstantMessage create(Envelope head, Content body) {
-    var helper = sharedMessageExtensions.instantHelper;
+    final helper = sharedMessageExtensions.instantHelper;
     return helper!.createInstantMessage(head, body);
   }
 
+  /// Parse a raw object into an [InstantMessage] instance.
+  ///
+  /// [msg] is the raw message data (map, JSON string, etc.).
+  ///
+  /// Returns a parsed [InstantMessage] instance, or null if parsing fails.
   static InstantMessage? parse(Object? msg) {
-    var helper = sharedMessageExtensions.instantHelper;
+    final helper = sharedMessageExtensions.instantHelper;
     return helper!.parseInstantMessage(msg);
   }
 
+  /// Generate a unique serial number (SN) for the message content.
+  ///
+  /// [msgType] is the content type (used for type-specific SN generation).
+  /// [now] is the message timestamp (defaults to current time if null).
+  ///
+  /// Returns a 64-bit unsigned integer (uint64) as the serial number.
   static int generateSerialNumber([String? msgType, DateTime? now]) {
-    var helper = sharedMessageExtensions.instantHelper;
+    final helper = sharedMessageExtensions.instantHelper;
     return helper!.generateSerialNumber(msgType, now);
   }
 
+  /// Get the instant message factory.
+  ///
+  /// Returns the registered [InstantMessageFactory], or null if not registered.
   static InstantMessageFactory? getFactory() {
-    var helper = sharedMessageExtensions.instantHelper;
+    final helper = sharedMessageExtensions.instantHelper;
     return helper!.getInstantMessageFactory();
   }
+
+  /// Register the instant message factory.
+  ///
+  /// [factory] is the factory to be registered.
   static void setFactory(InstantMessageFactory factory) {
-    var helper = sharedMessageExtensions.instantHelper;
+    final helper = sharedMessageExtensions.instantHelper;
     helper!.setInstantMessageFactory(factory);
   }
 }
@@ -132,11 +166,10 @@ abstract interface class InstantMessageFactory {
   ///
   /// The SN serves as a unique message ID (uint64) to track and deduplicate messages.
   ///
-  /// [msgType]: Type of the message content (used for algorithm-specific generation)
+  /// [msgType] is the type of the message content (used for algorithm-specific generation).
+  /// [now] is the timestamp to incorporate into the SN (or current time if null).
   ///
-  /// [now]: Timestamp to incorporate into the SN (or current time if null)
-  ///
-  /// Returns: 64-bit unsigned integer (uint64) as unique serial number
+  /// Returns a 64-bit unsigned integer (uint64) as the unique serial number.
   int generateSerialNumber(String? msgType, DateTime? now);
 
   /// Creates a new [InstantMessage] from envelope and plaintext content.
@@ -144,11 +177,10 @@ abstract interface class InstantMessageFactory {
   /// Combines routing metadata (envelope) with unencrypted content to form a complete
   /// instant message (plaintext stage).
   ///
-  /// [head]: Message envelope (routing metadata, cannot be null)
+  /// [head] is the message envelope (routing metadata, cannot be null).
+  /// [body] is the plaintext content (message payload, cannot be null).
   ///
-  /// [body]: Plaintext content (message payload, cannot be null)
-  ///
-  /// Returns: New [InstantMessage] instance
+  /// Returns a new [InstantMessage] instance.
   InstantMessage createInstantMessage(Envelope head, Content body);
 
   /// Parses a serialized Map into an [InstantMessage] instance.
@@ -156,8 +188,8 @@ abstract interface class InstantMessageFactory {
   /// Validates the structure and converts raw values (e.g., timestamp → DateTime,
   /// content map → Content object) to proper types.
   ///
-  /// [msg]: Serialized instant message data (matches format in [InstantMessage])
+  /// [msg] is the serialized instant message data (matches format in [InstantMessage]).
   ///
-  /// Returns: [InstantMessage] instance if parsing succeeds, null otherwise
+  /// Returns an [InstantMessage] instance if parsing succeeds, null otherwise.
   InstantMessage? parseInstantMessage(Mapping msg);
 }

@@ -44,42 +44,49 @@ import 'helpers.dart';
 /// so that only the target user's specific terminals can decrypt the data.
 abstract interface class EncryptedBundle {
 
-  // terminal -> encrypted key.data
+  /// Returns the internal map of terminal -> encrypted key data.
   Map<String, Uint8List> toMap();
 
+  /// Returns true if there is no encrypted key data.
   bool get isEmpty;
+
+  /// Returns true if there is at least one encrypted key data.
   bool get isNotEmpty;
 
   /// Get encrypted key data for terminal (index operator)
   ///
-  /// @param terminal - ID terminal
-  /// @return encrypted key data
+  /// [terminal] is the ID terminal.
+  ///
+  /// Returns the encrypted key data for the terminal, or null if not found.
   Uint8List? operator [](String terminal);
 
   /// Put encrypted key data for terminal (index assignment operator)
   ///
-  /// @param terminal - ID terminal
-  /// @param value    - encrypted key data (null removes the entry)
+  /// [terminal] is the ID terminal.
+  /// [value] is the encrypted key data (null removes the entry).
   void operator []=(String terminal, Uint8List? value);
 
   /// Remove encrypted key data for terminal
   ///
-  /// @param terminal - ID terminal
-  /// @return removed data
+  /// [terminal] is the ID terminal.
+  ///
+  /// Returns the removed encrypted key data, or null if not existed.
   Uint8List? remove(String terminal);
 
-  /// Encode key data
+  /// Encode key data for a user
   ///
-  /// @param receiver - user ID
-  /// @return encoded key data with targets (ID + terminals)
+  /// [receiver] is the user ID (without terminal).
+  ///
+  /// Returns encoded key data with targets (ID + terminals).
   Map<String, Object> encode(ID receiver);
 
   /// Decode key data from 'message.keys'
   ///
-  /// @param encodedKeys - encoded key data with targets (ID + terminals)
-  /// @param receiver    - user ID
-  /// @param terminals   - visa terminals
-  /// @return encrypted key data with targets (ID terminals)
+  /// [encodedKeys] is the encoded key data with targets (ID + terminals).
+  /// [receiver] is the user ID.
+  /// [terminals] is the visa terminals (null to decode all terminals).
+  ///
+  /// Returns encrypted key data with targets (ID terminals).
   static EncryptedBundle decode(Mapping encodedKeys, ID receiver, [Iterable<String>? terminals]) {
     final helper = sharedAccountExtensions.bundleHandler;
     return helper.decodeBundle(encodedKeys, receiver, terminals);
@@ -93,6 +100,10 @@ class UserEncryptedBundle implements EncryptedBundle {
   // terminal -> encrypted key.data
   final Map<String, Uint8List> _map = {};
 
+  /// Returns the class name of this bundle.
+  ///
+  /// Uses the runtime type name in debug mode, and the fixed name
+  /// 'UserEncryptedBundle' in release mode.
   String get className {
     String name = 'UserEncryptedBundle';
     assert(() {

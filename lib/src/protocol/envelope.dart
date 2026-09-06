@@ -66,7 +66,7 @@ abstract interface class Envelope implements Mapper<String, dynamic> {
   /// Timestamp when the message was created/sent.
   ///
   /// Represented as a [DateTime] object (parsed from Unix timestamp in serialized format).
-  /// Returns: Message timestamp, or null if not specified.
+  /// Returns the message timestamp, or null if not specified.
   DateTime? get time;
 
   /// Optional group identifier for group messages.
@@ -75,9 +75,13 @@ abstract interface class Envelope implements Mapper<String, dynamic> {
   /// group members, the `receiver` field is updated to the member's ID, and the original
   /// group ID is stored in this `group` field to preserve context.
   ///
-  /// Returns: Original group ID for split group messages, null for direct messages.
+  /// Returns the original group ID for split group messages, null for direct messages.
   ID? get group;
-  set group(ID? identifier);
+
+  /// Set the group ID for a split group message.
+  ///
+  /// [gid] is the original group ID (null for direct messages).
+  set group(ID? gid);
 
   /// Message content type identifier (for routing encrypted content).
   ///
@@ -87,28 +91,51 @@ abstract interface class Envelope implements Mapper<String, dynamic> {
   ///
   /// Examples: "text", "file", "command", ...
   String? get type;
+
+  /// Set the message content type.
+  ///
+  /// [msgType] is the content type identifier (e.g., "text", "file").
   set type(String? msgType);
 
   //
   //  Factory methods
   //
 
+  /// Create a new [Envelope] with the given routing metadata.
+  ///
+  /// [sender] is the ID of the message sender.
+  /// [receiver] is the ID of the message receiver (user/group).
+  /// [time] is the message timestamp (defaults to current time if null).
+  ///
+  /// Returns a new [Envelope] instance.
   static Envelope create({required ID sender, required ID receiver, DateTime? time}) {
-    var helper = sharedMessageExtensions.envelopeHelper;
+    final helper = sharedMessageExtensions.envelopeHelper;
     return helper!.createEnvelope(sender: sender, receiver: receiver, time: time);
   }
 
+  /// Parse a raw object into an [Envelope] instance.
+  ///
+  /// [env] is the raw envelope data (map, JSON string, etc.).
+  ///
+  /// Returns a parsed [Envelope] instance, or null if parsing fails.
   static Envelope? parse(Object? env) {
-    var helper = sharedMessageExtensions.envelopeHelper;
+    final helper = sharedMessageExtensions.envelopeHelper;
     return helper!.parseEnvelope(env);
   }
 
+  /// Get the envelope factory.
+  ///
+  /// Returns the registered [EnvelopeFactory], or null if not registered.
   static EnvelopeFactory? getFactory() {
-    var helper = sharedMessageExtensions.envelopeHelper;
+    final helper = sharedMessageExtensions.envelopeHelper;
     return helper!.getEnvelopeFactory();
   }
+
+  /// Register the envelope factory.
+  ///
+  /// [factory] is the factory to be registered.
   static void setFactory(EnvelopeFactory factory) {
-    var helper = sharedMessageExtensions.envelopeHelper;
+    final helper = sharedMessageExtensions.envelopeHelper;
     helper!.setEnvelopeFactory(factory);
   }
 }
@@ -121,13 +148,11 @@ abstract interface class EnvelopeFactory {
 
   /// Creates a new [Envelope] instance with required sender/receiver and optional timestamp.
   ///
-  /// [sender]: Required sender ID (cannot be null)
+  /// [sender] is the required sender ID (cannot be null).
+  /// [receiver] is the required receiver ID (cannot be null).
+  /// [time] is the optional message timestamp (defaults to current time if null).
   ///
-  /// [receiver]: Required receiver ID (cannot be null)
-  ///
-  /// [time]: Optional message timestamp (defaults to current time if null)
-  ///
-  /// Returns: New [Envelope] instance with the specified parameters
+  /// Returns a new [Envelope] instance with the specified parameters.
   Envelope createEnvelope({required ID sender, required ID receiver, DateTime? time});
 
   /// Parses a serialized Map into an [Envelope] instance.
@@ -135,9 +160,9 @@ abstract interface class EnvelopeFactory {
   /// Validates the structure and converts raw values (e.g., Unix timestamp → DateTime)
   /// to the proper types defined in the [Envelope] interface.
   ///
-  /// [env]: Serialized envelope data in the Map format defined in [Envelope]
+  /// [env] is the serialized envelope data in the Map format defined in [Envelope].
   ///
-  /// Returns: [Envelope] instance if parsing/validation succeeds, null otherwise
+  /// Returns an [Envelope] instance if parsing/validation succeeds, null otherwise.
   Envelope? parseEnvelope(Mapping env);
 }
 
@@ -220,11 +245,19 @@ abstract interface class Message implements Mapper<String, dynamic> {
   /// Serves as the single source of truth for sender, receiver, and base timestamp.
   Envelope get envelope;
 
-  ID get sender;       // envelope.sender
-  ID get receiver;     // envelope.receiver
-  DateTime? get time;  // content.time or envelope.time
+  /// Returns the message sender ID (envelope.sender).
+  ID get sender;
 
-  ID? get group;       // content.group or envelope.group
-  String? get type;    // content.type or envelope.type
+  /// Returns the message receiver ID (envelope.receiver).
+  ID get receiver;
+
+  /// Returns the message timestamp (content.time or envelope.time).
+  DateTime? get time;
+
+  /// Returns the group ID for group messages (content.group or envelope.group).
+  ID? get group;
+
+  /// Returns the message type (content.type or envelope.type).
+  String? get type;
 
 }
