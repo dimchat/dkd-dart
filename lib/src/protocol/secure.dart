@@ -34,7 +34,7 @@ import 'package:mkm/format.dart';
 import 'package:mkm/protocol.dart';
 import 'package:mkm/type.dart';
 
-import '../dkd/bundle.dart';
+import '../crypto/bundle.dart';
 
 import 'envelope.dart';
 import 'helpers.dart';

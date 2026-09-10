@@ -32,7 +32,7 @@ import 'dart:typed_data';
 
 import 'package:mkm/protocol.dart';
 
-import '../dkd/bundle.dart';
+import '../crypto//bundle.dart';
 
 import 'content.dart';
 import 'envelope.dart';
