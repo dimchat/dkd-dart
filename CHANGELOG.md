@@ -1,3 +1,7 @@
+## 2.5.2
+
+- Remove Dictionary from mkm.
+
 ## 2.5.1
 
 - Export bundle.
