@@ -43,15 +43,12 @@ import 'helpers.dart';
 /// Serialized format (Map/JSON):
 /// ```json
 /// {
-///   "type"    : "1",             // Message type (e.g., i2s(1) = "1" = "text")
-///   "sn"      : 12345,           // Unique serial number (serves as message ID)
+///   "type"  : "0",             // Message type (e.g., i2s(1) = "1" = "text")
+///   "sn"    : 12345,           // Unique serial number (serves as message ID)
 ///
-///   "time"    : 123.45,          // Message timestamp (Unix timestamp in seconds)
-///   "group"   : "group@zzz",     // Optional group ID (marks this as a group message)
+///   "time"  : 123.45,          // Message timestamp (Unix timestamp in seconds)
+///   "group" : "group@zzz",     // Optional group ID (marks this as a group message)
 ///
-///   //-- message info
-///   "text"    : "Hello World!",  // Text content (for text messages)
-///   "command" : "handshake"      // Command name (for system command messages)
 ///   //...
 /// }
 /// ```
@@ -73,6 +70,7 @@ abstract interface class Content implements Mapper<String, dynamic> {
   /// Timestamp when the content was created.
   ///
   /// Represented as a [DateTime] object (parsed from Unix timestamp in serialized format).
+  ///
   /// Returns the content creation timestamp, or null if not specified.
   DateTime? get time;
 
